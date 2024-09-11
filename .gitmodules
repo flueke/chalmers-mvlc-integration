@@ -7,3 +7,9 @@
 [submodule "external/drasi"]
     path = external/drasi
     url = https://git.chalmers.se/expsubphys/drasi.git
+[submodule "external/trloii"]
+	path = external/trloii
+	url = git@gitlab.com:chalmers-subexp/trloii.git
+[submodule "external/r3bfuser"]
+	path = external/r3bfuser
+	url = git@gitlab.com:chalmers-subexp/r3bfuser.git
