@@ -1,9 +1,9 @@
 [submodule "external/nurdlib"]
-	path = external/nurdlib
-	url = https://github.com/hanstt/nurdlib
+    path = external/nurdlib
+    url = https://github.com/hanstt/nurdlib
 [submodule "external/ucesb"]
-	path = external/ucesb
-	url = git://git.chalmers.se/expsubphys/ucesb.git
+    path = external/ucesb
+    url = https://git.chalmers.se/expsubphys/drasi.git
 [submodule "external/drasi"]
-	path = external/drasi
-	url = git://git.chalmers.se/expsubphys/drasi.git
+    path = external/drasi
+    url = https://git.chalmers.se/expsubphys/drasi.git
