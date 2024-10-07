@@ -1,3 +1,4 @@
+external/CAENVMELib*
 **/*.sw?
 CMakeLists.txt.user*
 .clangd/
