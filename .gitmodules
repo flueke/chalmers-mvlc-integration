@@ -1,6 +1,6 @@
 [submodule "external/nurdlib"]
     path = external/nurdlib
-    url = https://github.com/hanstt/nurdlib
+    url = https://github.com/flueke/nurdlib
 [submodule "external/ucesb"]
     path = external/ucesb
     url = https://git.chalmers.se/expsubphys/drasi.git
