@@ -1,6 +1,9 @@
 # syntax=docker/dockerfile:1.5
 # vim:ft=dockerfile
 
+# Based on info from https://fy.chalmers.se/subatom/subexp-daq/ and
+# https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16.txt
+#
 # To build:
 #   git submodule update --init --recursive
 #   docker build -t chalmers.se-mvlc:latest --progress plain .
@@ -15,13 +18,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     flex libncurses-dev cmake
 
 # Temp stuff during development (bsdextrautils is for the hexdump utility)t
-RUN apt-get install -y --no-install-recommends vim file bash-completion less gdb bsdextrautils
+RUN apt-get install -y --no-install-recommends vim file bash-completion less gdb bsdextrautils tmux
 RUN echo "set nocompatible\nset bg=dark\nsyntax enable\n" >> ~/.vimrc
 
 COPY . /sources/
 WORKDIR /sources
 
-ARG MAKEJOBS=8
+ARG MAKEJOBS=32
 #ARG CAENVERSION="v4.0.2"
 #ENV CAENLIB_DIR="/sources/CAENVMELib-${CAENVERSION}"
 #ENV CAENLIB_SO="$CAENLIB_DIR/lib/x64/libCAENVME.so.$CAENVERSION"
@@ -43,7 +46,6 @@ RUN ln -s external/ucesb
 
 RUN make -j$MAKEJOBS -C external/mvlcc
 
-
 RUN make -j$MAKEJOBS -C drasi
 RUN make -j$MAKEJOBS -C drasi showconfig showconfig_all
 
@@ -57,9 +59,5 @@ RUN make -j$MAKEJOBS -C nurdlib showconfig
 RUN make -j$MAKEJOBS -C ucesb empty
 RUN cat nurdlib/build_cc_x86_64-linux-gnu_12_debug/nconf/module/map/map.h.log
 
-#WORKDIR /sources/scripts
-#RUN  curl -O https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16/main.cfg
-#RUN  curl -O https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16/free.bash
-
-WORKDIR /sources
+WORKDIR /sources/scripts
 ENTRYPOINT ["bash"]
