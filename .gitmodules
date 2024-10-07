@@ -13,3 +13,9 @@
 [submodule "external/r3bfuser"]
 	path = external/r3bfuser
 	url = git@gitlab.com:chalmers-subexp/r3bfuser.git
+[submodule "external/mesytec-mvlc"]
+	path = external/mesytec-mvlc
+	url = git@github.com:flueke/mesytec-mvlc.git
+[submodule "external/mvlcc"]
+	path = external/mvlcc
+	url = https://github.com/flueke/mvlcc_chalmers

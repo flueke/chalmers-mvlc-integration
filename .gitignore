@@ -6,6 +6,7 @@ build*/
 .cache/
 *.~lock*
 *.dia.autosave
+*build.log
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
 .vscode/*
 !.vscode/settings.json
