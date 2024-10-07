@@ -41,13 +41,22 @@ RUN ln -s external/drasi
 RUN ln -s external/nurdlib
 RUN ln -s external/ucesb
 
-RUN make -j${MAKEJOBS} -C external/mvlcc
-#RUN make -j${MAKEJOBS} -C drasi
-#RUN make -j${MAKEJOBS} -C drasi showconfig showconfig_all
-#RUN make -j${MAKEJOBS} -C nurdlib fuser_drasi
-#RUN make -j${MAKEJOBS} -C nurdlib showconfig
-#RUN make -j${MAKEJOBS} -C ucesb empty
-#
+RUN make -j$MAKEJOBS -C external/mvlcc
+
+
+RUN make -j$MAKEJOBS -C drasi
+RUN make -j$MAKEJOBS -C drasi showconfig showconfig_all
+
+# No clue how to make nconf execute things, so stuff is run here manually and
+# written to an env file.
+RUN echo export MVLCC_CFLAGS=\"$(./external/mvlcc/bin/mvlcc-config.sh --cflags)\" > /tmp/mvlcc_flags.env
+RUN echo export MVLCC_LIBS=\"$(./external/mvlcc/bin/mvlcc-config.sh --libs)\" >> /tmp/mvlcc_flags.env
+RUN cat /tmp/mvlcc_flags.env
+RUN . /tmp/mvlcc_flags.env && make -j$MAKEJOBS -C nurdlib fuser_drasi
+RUN make -j$MAKEJOBS -C nurdlib showconfig
+RUN make -j$MAKEJOBS -C ucesb empty
+RUN cat nurdlib/build_cc_x86_64-linux-gnu_12_debug/nconf/module/map/map.h.log
+
 #WORKDIR /sources/scripts
 #RUN  curl -O https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16/main.cfg
 #RUN  curl -O https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16/free.bash
