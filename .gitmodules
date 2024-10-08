@@ -3,7 +3,7 @@
     url = https://github.com/flueke/nurdlib
 [submodule "external/ucesb"]
     path = external/ucesb
-    url = https://git.chalmers.se/expsubphys/drasi.git
+    url = https://git.chalmers.se/expsubphys/ucesb.git
 [submodule "external/drasi"]
     path = external/drasi
     url = https://git.chalmers.se/expsubphys/drasi.git
