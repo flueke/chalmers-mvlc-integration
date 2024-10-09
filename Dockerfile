@@ -33,11 +33,12 @@ ARG MAKEJOBS=32
 #ENV CPPFLAGS="-I$CAENLIB_DIR/include"
 #ENV LIBS=${CAENLIB_SO}
 ARG MVLC_DIR="/sources/external/mesytec-mvlc"
+ARG MVLC_CONF_ARGS="-DMVLC_BUILD_TESTS=OFF -DMVLC_BUILD_CONTROLLER_TESTS=OFF -DMVLC_BUILD_DEV_TOOLS=OFF -DMVLC_BUILD_DOCS=OFF"
 ENV MVLC_DIR=$MVLC_DIR
 ENV MVLCC_CONFIG=external/mvlcc/bin/mvlcc-config.sh
 
 RUN cmake -DCMAKE_BUILD_TYPE=Release -S $MVLC_DIR -B $MVLC_DIR/build \
-        -DCMAKE_INSTALL_PREFIX=$MVLC_DIR/install \
+        -DCMAKE_INSTALL_PREFIX=$MVLC_DIR/install $MVLC_CONF_ARGS \
         && cmake --build $MVLC_DIR/build -j$MAKEJOBS --target install
 
 # Create symlinks to libs in /sources. Having another subdir in-between did
@@ -65,4 +66,4 @@ RUN make -j$MAKEJOBS -C ucesb empty
 RUN cat nurdlib/build_cc_x86_64-linux-gnu_12_debug/nconf/module/map/map.h.log
 
 WORKDIR /sources/scripts
-ENTRYPOINT ["bash"]
+ENTRYPOINT ["bash", "./free.bash"]
