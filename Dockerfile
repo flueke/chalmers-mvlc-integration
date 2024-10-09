@@ -8,6 +8,8 @@
 #   git submodule update --init --recursive
 #   docker build -t chalmers.se-mvlc:latest --progress plain .
 
+# TODO: try this https://www.vinnie.work/blog/2020-10-22-vscode-c-debug#debugging-builds-with-containerized-debugger
+
 FROM debian:stable as build
 
 ENV DEBIAN_FRONTEND="noninteractive"

@@ -2,7 +2,7 @@
 
 export NURDLIB_DEF_PATH=`pwd`/../nurdlib/cfg/default
 
-../nurdlib/bin/m_read_meb.drasi \
+gdb -ex r --args ../nurdlib/build_cc_x86_64-linux-gnu_12_debug/m_read_meb.drasi \
 	--log-no-start-wait \
         --buf=size=100Mi,valloc \
         --max-ev-size=0x100000 \
