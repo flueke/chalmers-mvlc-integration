@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     flex libncurses-dev cmake
 
 # Temp stuff during development (bsdextrautils is for the hexdump utility)t
-RUN apt-get install -y --no-install-recommends vim file bash-completion less gdb bsdextrautils tmux
+RUN apt-get install -y --no-install-recommends vim file bash-completion less gdb bsdextrautils tmux iputils-ping
 RUN echo "set nocompatible\nset bg=dark\nsyntax enable\n" >> ~/.vimrc
 
 COPY . /sources/
@@ -48,6 +48,9 @@ RUN make -j$MAKEJOBS -C external/mvlcc
 
 RUN make -j$MAKEJOBS -C drasi
 RUN make -j$MAKEJOBS -C drasi showconfig showconfig_all
+
+# This is too much at times :)
+RUN sed -i -e '/pedantic-errors/d' nurdlib/Makefile
 
 # No clue how to make nconf execute things, so stuff is run here manually and
 # written to an env file.
