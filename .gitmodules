@@ -1,6 +1,6 @@
 [submodule "external/nurdlib"]
     path = external/nurdlib
-    url = https://github.com/flueke/nurdlib
+    url = git@github.com:flueke/nurdlib.git
 [submodule "external/ucesb"]
     path = external/ucesb
     url = https://git.chalmers.se/expsubphys/ucesb.git
@@ -18,4 +18,4 @@
 	url = git@github.com:flueke/mesytec-mvlc.git
 [submodule "external/mvlcc"]
 	path = external/mvlcc
-	url = https://github.com/flueke/mvlcc_chalmers
+    url = git@github.com:flueke/mvlcc_chalmers.git
