@@ -66,4 +66,4 @@ RUN make -j$MAKEJOBS -C ucesb empty
 RUN cat nurdlib/build_cc_x86_64-linux-gnu_12_debug/nconf/module/map/map.h.log
 
 WORKDIR /sources/scripts
-ENTRYPOINT ["bash", "./free.bash"]
+#ENTRYPOINT ["bash", "./free.bash"]
