@@ -3,15 +3,10 @@
 
 # Based on info from https://fy.chalmers.se/subatom/subexp-daq/ and
 # https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16.txt
-#
-# To build:
-#   git submodule update --init --recursive
-#   docker build -t chalmers.se-mvlc:latest --progress plain .
-
-# TODO: try this https://www.vinnie.work/blog/2020-10-22-vscode-c-debug#debugging-builds-with-containerized-debugger
 
 FROM debian:stable as build
 
+ARG UID=1000
 ENV DEBIAN_FRONTEND="noninteractive"
 ENV TZ="Etc/UTC"
 
@@ -23,15 +18,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN apt-get install -y --no-install-recommends vim file bash-completion less gdb bsdextrautils tmux iputils-ping
 RUN echo "set nocompatible\nset bg=dark\nsyntax enable\n" >> ~/.vimrc
 
+RUN adduser -u $UID daq
+USER daq
+
 COPY . /sources/
 WORKDIR /sources
 
 ARG MAKEJOBS=32
-#ARG CAENVERSION="v4.0.2"
-#ENV CAENLIB_DIR="/sources/CAENVMELib-${CAENVERSION}"
-#ENV CAENLIB_SO="$CAENLIB_DIR/lib/x64/libCAENVME.so.$CAENVERSION"
-#ENV CPPFLAGS="-I$CAENLIB_DIR/include"
-#ENV LIBS=${CAENLIB_SO}
 ARG MVLC_DIR="/sources/external/mesytec-mvlc"
 ARG MVLC_CONF_ARGS="-DMVLC_BUILD_TESTS=OFF -DMVLC_BUILD_CONTROLLER_TESTS=OFF -DMVLC_BUILD_DEV_TOOLS=OFF -DMVLC_BUILD_DOCS=OFF"
 ENV MVLC_DIR=$MVLC_DIR
