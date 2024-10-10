@@ -16,3 +16,7 @@ build*/
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 CMakeUserPresets.json
+install-prefix/
+drasi
+nurdlib
+ucesb
