@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch m_read_meb.drasi",
+            "name": "(gdb) m_read_meb.drasi",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/nurdlib/build_cc_x86_64-linux-gnu_12_debug/m_read_meb.drasi",
@@ -16,7 +16,10 @@
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/scripts",
-            "environment": [{"name": "NURDLIB_DEF_PATH", "value": "/${workspaceFolder}/nurdlib/cfg/default"}],
+            "environment": [
+                {"name": "NURDLIB_DEF_PATH", "value": "/${workspaceFolder}/nurdlib/cfg/default"},
+                {"name": "LD_LIBRARY_PATH", "value": "/${workspaceFolder}/install-prefix/lib"},
+            ],
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
@@ -30,7 +33,10 @@
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 }
-            ]
+            ],
+            "sourceFileMap": {
+                "/workspaces/chalmers.se-mvlc": "${workspaceFolder}"
+            },
         }
     ]
 }

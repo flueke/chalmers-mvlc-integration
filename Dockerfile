@@ -1,9 +1,6 @@
 # syntax=docker/dockerfile:1.5
 # vim:ft=dockerfile
 
-# Based on info from https://fy.chalmers.se/subatom/subexp-daq/ and
-# https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16.txt
-
 FROM debian:stable as build
 
 ARG UID=1000
