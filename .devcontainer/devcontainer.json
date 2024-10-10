@@ -15,7 +15,8 @@
 				"ms-vscode.cpptools-extension-pack",
 				"akiramiyakoda.cppincludeguard",
 				"twxs.cmake",
-				"ms-vscode.cmake-tools"
+				"ms-vscode.cmake-tools",
+				"ms-vscode.makefile-tools"
 			]
 		}
 	}

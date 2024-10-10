@@ -2,9 +2,9 @@ set -e
 set -x
 
 # Clean some of the repos to remove build artifacts.
-#for d in external/{drasi,nurdlib,ucesb,mvlcc}; do
-#      cd $d && git clean -d -f && cd -
-#done
+for d in external/{drasi,nurdlib,ucesb,mvlcc}; do
+      cd $d && git clean -d -f && cd -
+done
 
 # Create symlinks to libs in /sources. Having another subdir in-between did
 # break the build.
@@ -13,6 +13,7 @@ ln -sf external/nurdlib
 ln -sf external/ucesb
 
 MAKEJOBS=32
+export LC_ALL="C"
 
 ## mesytec-mvlc
 MVLC_CONF_ARGS="-DMVLC_BUILD_TESTS=OFF -DMVLC_BUILD_CONTROLLER_TESTS=OFF -DMVLC_BUILD_DEV_TOOLS=OFF -DMVLC_BUILD_DOCS=OFF"
@@ -32,6 +33,10 @@ export MVLCC_CFLAGS=$(external/mvlcc/bin/mvlcc-config.sh --cflags)
 export MVLCC_LIBS=$(external/mvlcc/bin/mvlcc-config.sh --libs)
 echo "MVLCC_CFLAGS=$MVLCC_CFLAGS"
 echo "MVLCC_LIBS=$MVLCC_LIBS"
+
+## the cleaning
+make -j$MAKEJOBS -C drasi clean-all
+make -j$MAKEJOBS -C nurdlib clean
 
 ## the daq
 make -j$MAKEJOBS -C drasi

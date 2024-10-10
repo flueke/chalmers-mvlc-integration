@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(gdb) Launch m_read_meb.drasi",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/nurdlib/build_cc_x86_64-linux-gnu_12_debug/m_read_meb.drasi",
+            "args": [
+                "--log-no-start-wait",
+                "--buf=size=100Mi,valloc",
+                "--max-ev-size=0x100000",
+                "--max-ev-interval=50s",
+                "--log",
+                "--server=trans"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/scripts",
+            "environment": [{"name": "NURDLIB_DEF_PATH", "value": "/${workspaceFolder}/nurdlib/cfg/default"}],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
