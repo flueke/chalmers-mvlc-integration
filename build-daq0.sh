@@ -30,16 +30,14 @@ export MVLCC_LIBS=$(external/mvlcc/bin/mvlcc-config.sh --libs)
 echo "MVLCC_CFLAGS=$MVLCC_CFLAGS"
 echo "MVLCC_LIBS=$MVLCC_LIBS"
 
-make -j$MAKEJOBS -C nurdlib clean
 make -j$MAKEJOBS -C nurdlib fuser_drasi
 make -j$MAKEJOBS -C nurdlib showconfig
-make -j$MAKEJOBS -C ucesb all-clean
 
 # Skipping ucesb for now. For some reason it builds when the tree is clean. The
 # second time around it starts to run an hbook/example/ext_writer_test that
 # never returns. git clean and/or make clean-all did not help.
 #cd ucesb && git clean -d -f && cd ..
-#make -j$MAKEJOBS -C ucesb clean
+#make -j$MAKEJOBS -C ucesb all-clean
 #make -j$MAKEJOBS -C ucesb empty
 
 cat nurdlib/build_cc_x86_64-linux-gnu_12_debug/nconf/module/map/map.h.log
