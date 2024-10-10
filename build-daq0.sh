@@ -23,6 +23,7 @@ export MVLCC_CONFIG="external/mvlcc/bin/mvlcc-config.sh"
 
 ## the cleaning, might be needed if paths change
 #rm -rf $MVLC_SRC/build
+make -j$MAKEJOBS -C external/mvlcc clean
 #make -j$MAKEJOBS -C drasi clean-all
 #make -j$MAKEJOBS -C nurdlib clean
 
@@ -36,12 +37,12 @@ cmake --build $MVLC_SRC/build -j$MAKEJOBS --target install
 
 ## mvlcc
 echo "MVLC_DIR=$MVLC_DIR"
-
-make -j$MAKEJOBS -C external/mvlcc
 export MVLCC_CFLAGS=$(external/mvlcc/bin/mvlcc-config.sh --cflags)
 export MVLCC_LIBS=$(external/mvlcc/bin/mvlcc-config.sh --libs)
 echo "MVLCC_CFLAGS=$MVLCC_CFLAGS"
 echo "MVLCC_LIBS=$MVLCC_LIBS"
+
+make -j$MAKEJOBS -C external/mvlcc
 
 ## the daq
 make -j$MAKEJOBS -C drasi
