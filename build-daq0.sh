@@ -5,10 +5,11 @@
 set -e
 set -x
 
-# Clean some of the repos to remove build artifacts.
-for d in external/{drasi,nurdlib,ucesb,mvlcc}; do
-      cd $d && git clean -d -f && cd -
-done
+# Clean some of the repos to remove build artifacts. Dangerous if your stuff is
+# not commited or checked into the index!
+#for d in external/{drasi,nurdlib,ucesb,mvlcc}; do
+#      cd $d && git clean -d -f && cd -
+#done
 
 # Create symlinks to libs in /sources. Having another subdir in-between did
 # break the build.
