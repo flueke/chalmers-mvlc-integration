@@ -35,13 +35,13 @@ cmake -S $MVLC_SRC -B $MVLC_SRC/build -DCMAKE_INSTALL_PREFIX=$MVLC_DIR $MVLC_CON
 cmake --build $MVLC_SRC/build -j$MAKEJOBS --target install
 
 ## mvlcc
+make -j$MAKEJOBS -C external/mvlcc
+
 echo "MVLC_DIR=$MVLC_DIR"
 export MVLCC_CFLAGS=$(external/mvlcc/bin/mvlcc-config.sh --cflags)
 export MVLCC_LIBS=$(external/mvlcc/bin/mvlcc-config.sh --libs)
 echo "MVLCC_CFLAGS=$MVLCC_CFLAGS"
 echo "MVLCC_LIBS=$MVLCC_LIBS"
-
-make -j$MAKEJOBS -C external/mvlcc
 
 ## the daq
 make -j$MAKEJOBS -C drasi
