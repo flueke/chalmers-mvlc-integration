@@ -57,4 +57,12 @@ make -j$MAKEJOBS -C nurdlib showconfig
 #make -j$MAKEJOBS -C ucesb all-clean
 #make -j$MAKEJOBS -C ucesb empty
 
-cat nurdlib/build_cc_x86_64-linux-gnu_12_debug/nconf/module/map/map.h.log
+CC=${CC:-cc}
+CC_MACHINE=`$CC -dumpmachine`
+CC_VERSION=`$CC -dumpversion`
+BUILD_TYPE=debug
+ARCH_SUFFIX=${CC_MACHINE}_${CC_VERSION}
+cat nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}/nconf/module/map/map.h.log
+BIN_DIR=nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}
+DAQ_BINARY=$BIN_DIR/m_read_meb.drasi
+cd nurdlib/bin && ln -sf ../../$DAQ_BINARY

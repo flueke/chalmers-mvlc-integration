@@ -1,0 +1,4 @@
+{
+    "makefile.makefilePath": "${workspaceFolder}/src/Makefile",
+    "makefile.makeDirectory": "${workspaceFolder}/src"
+}
