@@ -5,7 +5,7 @@
             "name": "(gdb) m_read_meb.drasi",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/nurdlib/bin/m_read_meb.drasi",
+            "program": "${workspaceFolder}/nurdlib/bin/daq0",
             "args": [
                 "--log-no-start-wait",
                 "--buf=size=100Mi,valloc",

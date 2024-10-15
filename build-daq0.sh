@@ -45,10 +45,22 @@ echo "MVLCC_CFLAGS=$MVLCC_CFLAGS"
 echo "MVLCC_LIBS=$MVLCC_LIBS"
 
 ## the daq
+CC=${CC:-cc}
+CC_MACHINE=`$CC -dumpmachine`
+CC_VERSION=`$CC -dumpversion`
+BUILD_TYPE=debug
+ARCH_SUFFIX=${CC_MACHINE}_${CC_VERSION}
+NURD_BIN_DIR=nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}
+DAQ_BINARY=$NURD_BIN_DIR/m_read_meb.drasi
+
 make -j$MAKEJOBS -C drasi
 make -j$MAKEJOBS -C drasi showconfig showconfig_all
 make -j$MAKEJOBS -C nurdlib fuser_drasi
 make -j$MAKEJOBS -C nurdlib showconfig
+
+cat nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}/nconf/module/map/map.h.log
+# Remove the symlink to caller.sh and replay it with the actualy binary.
+cd nurdlib/bin && ln -sf ../../$DAQ_BINARY daq0
 
 # For some reason ucesb builds when the tree is clean. The second time around it
 # starts to run an hbook/example/ext_writer_test that never returns. git clean
@@ -56,13 +68,3 @@ make -j$MAKEJOBS -C nurdlib showconfig
 # Update: I think this might be related to shared memory inside the container.
 #make -j$MAKEJOBS -C ucesb all-clean
 #make -j$MAKEJOBS -C ucesb empty
-
-CC=${CC:-cc}
-CC_MACHINE=`$CC -dumpmachine`
-CC_VERSION=`$CC -dumpversion`
-BUILD_TYPE=debug
-ARCH_SUFFIX=${CC_MACHINE}_${CC_VERSION}
-cat nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}/nconf/module/map/map.h.log
-BIN_DIR=nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}
-DAQ_BINARY=$BIN_DIR/m_read_meb.drasi
-cd nurdlib/bin && ln -sf ../../$DAQ_BINARY
