@@ -24,9 +24,9 @@ export MVLCC_CONFIG="external/mvlcc/bin/mvlcc-config.sh"
 
 ## the cleaning, might be needed if paths change
 #rm -rf $MVLC_SRC/build
-#make -j$MAKEJOBS -C external/mvlcc clean
-#make -j$MAKEJOBS -C drasi clean-all
-#make -j$MAKEJOBS -C nurdlib clean
+make -j$MAKEJOBS -C external/mvlcc clean
+make -j$MAKEJOBS -C drasi clean-all
+make -j$MAKEJOBS -C nurdlib clean
 
 ## mesytec-mvlc
 MVLC_CONF_ARGS="-DCMAKE_BUILD_TYPE=Debug -DMVLC_BUILD_TESTS=OFF -DMVLC_BUILD_CONTROLLER_TESTS=OFF -DMVLC_BUILD_DEV_TOOLS=OFF -DMVLC_BUILD_DOCS=OFF"
