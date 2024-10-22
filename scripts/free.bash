@@ -6,15 +6,16 @@ export NURDLIB_DEF_PATH=`pwd`/../nurdlib/cfg/default
 # TODO: figure out why rpath from mvlcc doesn't stick when building outside of docker.
 export LD_LIBRARY_PATH=`pwd`/../install-prefix/lib:$LD_LIBRARY_PATH
 
-if [ -z "$CC" ]; then
-    CC=cc
-fi
-CC_MACHINE=`$CC -dumpmachine`
-CC_VERSION=`$CC -dumpversion`
-BUILD_TYPE=debug
-ARCH_SUFFIX=${CC_MACHINE}_${CC_VERSION}
-BIN_DIR="../nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}"
-DAQ_BINARY=$BIN_DIR/m_read_meb.drasi
+#if [ -z "$CC" ]; then
+#    CC=cc
+#fi
+#CC_MACHINE=`$CC -dumpmachine`
+#CC_VERSION=`$CC -dumpversion`
+#BUILD_TYPE=debug
+#ARCH_SUFFIX=${CC_MACHINE}_${CC_VERSION}
+#BIN_DIR="../nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}"
+#DAQ_BINARY=$BIN_DIR/m_read_meb.drasi
+DAQ_BINARY="../nurdlib/bin/daq0"
 
 test -x $DAQ_BINARY || {
     echo "DAQ binary not found: $DAQ_BINARY"
