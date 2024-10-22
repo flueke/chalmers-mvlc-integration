@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) m_read_meb.drasi",
+            "name": "(gdb) daq0",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/nurdlib/bin/daq0",
@@ -34,9 +34,9 @@
                     "ignoreFailures": true
                 }
             ],
-            "sourceFileMap": {
-                "/workspaces/chalmers.se-mvlc": "${workspaceFolder}"
-            },
+            //"sourceFileMap": {
+            //    "/workspaces/chalmers.se-mvlc": "${workspaceFolder}"
+            //},
         }
     ]
 }
