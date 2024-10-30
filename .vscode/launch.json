@@ -34,9 +34,64 @@
                     "ignoreFailures": true
                 }
             ],
+            // Use this when developing in a docker container
             //"sourceFileMap": {
             //    "/workspaces/chalmers.se-mvlc": "${workspaceFolder}"
             //},
+        },
+        {
+            "name": "(gdb) mvlcc/test3",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/external/mvlcc/example/test3",
+            "args": [
+                "mvlc-0056",
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+        },
+        {
+            "name": "(gdb) mvlcc/test4",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/external/mvlcc/example/test4",
+            "args": [
+                "mvlc-0056",
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
         }
     ]
 }
