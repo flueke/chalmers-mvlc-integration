@@ -8,7 +8,4 @@ https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16.txt
   ./build-daq0.sh && cd scripts && ./free.bash
   ```
 
-# TODO
-
-- figure out why rpath from mvlcc doesn't stick when building outside of docker.
-- how to set shm_size when running in devcontainers? this might make ucesb work inside the container
+# Stuff

@@ -20,3 +20,5 @@ CMakeUserPresets.json
 /drasi
 /nurdlib
 /ucesb
+src/*.o
+src/daq?
