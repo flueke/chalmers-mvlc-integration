@@ -40,12 +40,12 @@ endif
 
 .PHONY: all clean info
 
-all: daq1
+TARGET=daq2
+
+$(TARGET): daq2-nurdlib-triggered/daq2.cc
+	$(CXX) -o $@ $^ $(LIBS) $(CPPFLAGS)
+
+all: $(TARGET)
 
 clean:
-	-rm -f daq1.o daq1
-
-daq1.o: daq1.cc
-
-daq1: daq1.o
-	$(CXX) -o $@ $^ $(LIBS)
+	-rm -f daq2.o $(TARGET)
