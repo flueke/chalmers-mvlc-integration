@@ -15,10 +15,10 @@ LIBS:=$(LIBS) $(shell $(MVLCC_CONFIG) --libs)
 
 TARGET=daq1
 
+all: $(TARGET)
+
 $(TARGET): daq1-drasi-lwroc/daq1.cc
 	$(CXX) -o $@ $^ $(LIBS) $(CPPFLAGS)
-
-all: $(TARGET)
 
 clean:
 	-rm -f daq1.o $(TARGET)

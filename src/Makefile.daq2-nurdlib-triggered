@@ -38,7 +38,7 @@ ifeq (release,$(BUILD_MODE))
  CPPFLAGS+=-O3
 endif
 
-.PHONY: all clean info
+.PHONY: all clean
 
 TARGET=daq2
 
