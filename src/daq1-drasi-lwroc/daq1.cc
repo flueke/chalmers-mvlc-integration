@@ -5,6 +5,8 @@
 extern "C"
 {
 
+#include <lwroc_mon_block.h>
+#include <lwroc_net_conn_monitor.h>
 #include "lwroc_parse_util.h"
 #include "lwroc_readout.h"
 
@@ -44,6 +46,8 @@ struct CWriteHandle: public mesytec::mvlc::listfile::WriteHandle
 };
 
 extern struct lwroc_readout_functions _lwroc_readout_functions;
+extern lwroc_mon_block *_lwroc_mon_main_handle;
+extern lwroc_net_conn_monitor *_lwroc_mon_main_system_handle;
 std::shared_ptr<spdlog::logger> logger;
 
 struct DaqContext
@@ -57,6 +61,7 @@ struct DaqContext
   std::unique_ptr<mesytec::mvlc::ReadoutWorker> readoutWorker;
   mesytec::mvlc::MVLC mvlc;
   size_t bufferNumber = 0;
+  uint32_t outputEventNumber = 0;
 };
 
 DaqContext g_ctx;
@@ -64,7 +69,7 @@ DaqContext g_ctx;
 void lwroc_readout_pre_parse_functions(void)
 {
   logger = mesytec::mvlc::get_logger("daq1");
-  logger->set_level(spdlog::level::trace);
+  logger->set_level(spdlog::level::info);
   logger->info("entered lwroc_readout_pre_parse_functions()");
 
   _lwroc_readout_functions.init = init;
@@ -103,9 +108,14 @@ size_t listfile_write_callback(void *userContext, const uint8_t *data, size_t si
 
     if (parseResult != mesytec::mvlc::readout_parser::ParseResult::Ok)
     {
-      logger->error("Error parsing readout buffer: {}",
+      logger->error("listfile_write_callback: Error parsing readout buffer: {}",
         mesytec::mvlc::readout_parser::get_parse_result_name(parseResult));
       return 0;
+    }
+    else
+    {
+      logger->debug("listfile_write_callback: processed buffer #{} of size {} B",
+        ctx->bufferNumber-1, size);
     }
 
   return 0;
@@ -118,7 +128,9 @@ void readout_parser_callback_eventdata(
   logger->trace("readout_parser_callback_eventdata(): crateIndex={}, eventIndex={}, moduleCount={}",
     crateIndex, eventIndex, moduleCount);
 
-  if (true)
+  auto context = static_cast<DaqContext *>(userContext);
+
+  if (logger->should_log(spdlog::level::trace))
   {
       for (uint32_t moduleIndex = 0; moduleIndex < moduleCount; ++moduleIndex)
       {
@@ -129,6 +141,54 @@ void readout_parser_callback_eventdata(
                   std::cout, std::basic_string_view<uint32_t>(moduleData.data.data, moduleData.data.size),
                   fmt::format("module data: crateId={} eventIndex={}, moduleIndex={}", crateIndex, eventIndex, moduleIndex));
       }
+  }
+
+  size_t totalWords = 0u;
+
+  for (uint32_t moduleIndex = 0; moduleIndex < moduleCount; ++moduleIndex)
+  {
+    totalWords += moduleDataList[moduleIndex].data.size;
+  }
+
+  if (totalWords > 0)
+  {
+    const size_t totalBytes = totalWords * sizeof(uint32_t);
+		struct lwroc_lmd_subevent_info info;
+		lmd_event_10_1_host *event;
+		lmd_subevent_10_1_host *sev;
+		void *buf;
+		void *end;
+		size_t event_size;
+		event_size = sizeof (lmd_subevent_10_1_host) + totalBytes;
+		lwroc_reserve_event_buffer(context->lmd_stream, context->outputEventNumber++,
+		    event_size, 0, 0);
+		lwroc_new_event(context->lmd_stream, &event, 1);
+		info.type = 10;
+		info.subtype = 1;
+		info.procid = 13;
+		info.control = 1;
+		info.subcrate = 0;
+		buf = lwroc_new_subevent(context->lmd_stream, LWROC_LMD_SEV_NORMAL,
+		    &sev, &info);
+
+    for (uint32_t moduleIndex = 0; moduleIndex < moduleCount; ++moduleIndex)
+    {
+      auto moduleData = moduleDataList[moduleIndex];
+      memcpy(buf, moduleData.data.data, moduleData.data.size * sizeof(uint32_t));
+    }
+
+		end = (uint8_t *)buf + totalWords * sizeof(uint32_t);
+		lwroc_finalise_subevent(context->lmd_stream, LWROC_LMD_SEV_NORMAL,
+		    end);
+		lwroc_finalise_event_buffer(context->lmd_stream);
+
+		LWROC_MON_CHECK_COPY_BLOCK(_lwroc_mon_main_handle,
+		    &_lwroc_mon_main, 0);
+		LWROC_MON_CHECK_COPY_CONN_MON_BLOCK(
+		    _lwroc_mon_main_system_handle, 0);
+
+    logger->debug("readout_parser_callback_eventdata: finalized event buffer #{} of size {} B ({} words)",
+      context->outputEventNumber-1, totalBytes, totalBytes/sizeof(uint32_t));
   }
 }
 
