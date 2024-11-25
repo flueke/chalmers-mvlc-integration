@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstdint>
 #include <mesytec-mvlc/mesytec-mvlc.h>
 
@@ -29,7 +30,9 @@ struct CWriteHandle: public mesytec::mvlc::listfile::WriteHandle
   explicit CWriteHandle(listfile_write_function write, void *userContext = nullptr)
     : write_(write)
     , userContext_(userContext)
-  { }
+  {
+    assert(write);
+  }
 
   size_t write(const uint8_t *data, size_t size) override
   {
@@ -50,8 +53,10 @@ struct DaqContext
   mesytec::mvlc::CrateConfig crateConfig;
   mesytec::mvlc::readout_parser::ReadoutParserCallbacks parserCallbacks;
   mesytec::mvlc::readout_parser::ReadoutParserState readoutParser;
+  mesytec::mvlc::readout_parser::ReadoutParserCounters readoutParserCounters;
   std::unique_ptr<mesytec::mvlc::ReadoutWorker> readoutWorker;
   mesytec::mvlc::MVLC mvlc;
+  size_t bufferNumber = 0;
 };
 
 DaqContext g_ctx;
@@ -59,7 +64,7 @@ DaqContext g_ctx;
 void lwroc_readout_pre_parse_functions(void)
 {
   logger = mesytec::mvlc::get_logger("daq1");
-  logger->set_level(spdlog::level::debug);
+  logger->set_level(spdlog::level::trace);
   logger->info("entered lwroc_readout_pre_parse_functions()");
 
   _lwroc_readout_functions.init = init;
@@ -78,15 +83,60 @@ void lwroc_readout_setup_functions(void)
   logger->info("leaving lwroc_readout_setup_functions()");
 }
 
-void callback_eventdata(void *userContext, int crateIndex, int eventIndex,
-                        const mesytec::mvlc::readout_parser::ModuleData *moduleDataList, unsigned moduleCount)
+
+size_t listfile_write_callback(void *userContext, const uint8_t *data, size_t size)
 {
-  assert(false);
+  auto ctx = static_cast<DaqContext *>(userContext);
+
+  assert(size % 4 == 0); // the readout buffer should only contain 32-bit words
+
+  const uint32_t *buf = reinterpret_cast<const uint32_t *>(data);
+  const size_t bufWords = size / sizeof(uint32_t);
+
+  auto parseResult = mesytec::mvlc::readout_parser::parse_readout_buffer(
+    ctx->mvlc.connectionType(),
+    ctx->readoutParser,
+    ctx->parserCallbacks,
+    ctx->readoutParserCounters,
+    ctx->bufferNumber++,
+    buf, bufWords);
+
+    if (parseResult != mesytec::mvlc::readout_parser::ParseResult::Ok)
+    {
+      logger->error("Error parsing readout buffer: {}",
+        mesytec::mvlc::readout_parser::get_parse_result_name(parseResult));
+      return 0;
+    }
+
+  return 0;
 }
 
-void callback_systemevent(void *userContext, int crateIndex, const uint32_t *header, uint32_t size)
+void readout_parser_callback_eventdata(
+  void *userContext, int crateIndex, int eventIndex,
+  const mesytec::mvlc::readout_parser::ModuleData *moduleDataList, unsigned moduleCount)
 {
-  assert(false);
+  logger->trace("readout_parser_callback_eventdata(): crateIndex={}, eventIndex={}, moduleCount={}",
+    crateIndex, eventIndex, moduleCount);
+
+  if (true)
+  {
+      for (uint32_t moduleIndex = 0; moduleIndex < moduleCount; ++moduleIndex)
+      {
+          auto &moduleData = moduleDataList[moduleIndex];
+
+          if (moduleData.data.size)
+              mesytec::mvlc::util::log_buffer(
+                  std::cout, std::basic_string_view<uint32_t>(moduleData.data.data, moduleData.data.size),
+                  fmt::format("module data: crateId={} eventIndex={}, moduleIndex={}", crateIndex, eventIndex, moduleIndex));
+      }
+  }
+}
+
+void readout_parser_callback_systemevent(
+  void *userContext, int crateIndex, const uint32_t *header, uint32_t size)
+{
+  logger->trace("readout_parser_callback_systemevent(): crateIndex={}, header={:08x}, size={}",
+    crateIndex, *header, size);
 }
 
 void init(void)
@@ -136,10 +186,31 @@ void init(void)
           to_string(cmdResult.cmd), cmdResult.ec.message());
       errorSeen = true;
     }
+    else
+    {
+      logger->info("init_readout: cmd={}, ec={}", to_string(cmdResult.cmd), cmdResult.ec.message());
+    }
   }
 
   if (errorSeen)
     return;
+
+  static const uint8_t crateId = 0;
+
+  auto listfileWriteHandle = std::make_shared<CWriteHandle>(
+    listfile_write_callback, static_cast<void *>(&g_ctx));
+
+  g_ctx.readoutWorker = std::make_unique<mesytec::mvlc::ReadoutWorker>(
+    g_ctx.mvlc, listfileWriteHandle, crateId);
+
+  g_ctx.readoutWorker->setMcstDaqStartCommands(g_ctx.crateConfig.mcstDaqStart);
+  g_ctx.readoutWorker->setMcstDaqStopCommands(g_ctx.crateConfig.mcstDaqStop);
+
+  g_ctx.readoutParser = mesytec::mvlc::readout_parser::make_readout_parser(
+    g_ctx.crateConfig.stacks, static_cast<void *>(&g_ctx));
+
+  g_ctx.parserCallbacks.eventData = readout_parser_callback_eventdata;
+  g_ctx.parserCallbacks.systemEvent = readout_parser_callback_systemevent;
 
   g_ctx.lmd_stream = lwroc_get_lmd_stream("READOUT_PIPE");
   lwroc_init_timestamp_track();
@@ -149,17 +220,43 @@ void init(void)
 
 void read_event(uint64_t cycle, uint16_t trig)
 {
-  assert(false);
+  assert(!"read_event() not implemented!");
 }
 
 void readout_loop(int *start_no_stop)
 {
   logger->info("entering readout_loop()");
-  unsigned int cycle;
+  unsigned int cycle = 0;
+
+  if (auto ec = g_ctx.readoutWorker->start().get())
+  {
+    logger->error("Error starting readout: {}", ec.message());
+    return;
+  }
 
   for (cycle = 1; !_lwroc_main_thread->_terminate; cycle++)
   {
+    logger->trace("readout_loop(): cycle {}", cycle);
+
+    if (g_ctx.readoutWorker->state() == mesytec::mvlc::ReadoutWorker::State::Idle)
+    {
+      logger->info("readout_worker state became Idle, leaving readout_loop()");
+      break;
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
+
+  if (auto ec = g_ctx.readoutWorker->stop())
+  {
+    logger->warn("Error stopping readout: {}", ec.message());
+  }
+
+  while (g_ctx.readoutWorker->state() != mesytec::mvlc::ReadoutWorker::State::Idle)
+  {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  }
+
   logger->info("leaving readout_loop()");
 }
 

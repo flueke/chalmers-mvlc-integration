@@ -50,10 +50,11 @@
                 "--max-ev-size=0x100000",
                 "--max-ev-interval=50s",
                 "--log",
-                "--server=trans"
+                "--server=trans",
+                "--mvlc-crateconfig=01-mdpp16_scp.yaml"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/scripts",
+            "cwd": "${workspaceFolder}/src",
             "environment": [
                 {"name": "NURDLIB_DEF_PATH", "value": "/${workspaceFolder}/nurdlib/cfg/default"},
                 {"name": "LD_LIBRARY_PATH", "value": "/${workspaceFolder}/install-prefix/lib"},
