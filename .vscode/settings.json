@@ -1,4 +1,20 @@
 {
     "makefile.makefilePath": "${workspaceFolder}/src/Makefile",
-    "makefile.makeDirectory": "${workspaceFolder}/src"
+    "makefile.makeDirectory": "${workspaceFolder}/src",
+    "files.associations": {
+        "*.analysis": "json",
+        "*.mvmemodule": "json",
+        "lwroc_parse_util.h": "c",
+        "lwroc_lmd_event.h": "c"
+    },
+    "makefile.configureOnOpen": true,
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/florian/src/chalmers-mvlc-integration/src",
+            "binaryPath": "/home/florian/src/chalmers-mvlc-integration/src/daq1",
+            "binaryArgs": []
+        }
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "cmake.generator": "Unix Makefiles"
 }
