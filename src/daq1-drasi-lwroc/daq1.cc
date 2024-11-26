@@ -160,7 +160,7 @@ void readout_parser_callback_eventdata(
   uint8_t *buf;
   uint8_t *end;
   size_t event_size;
-  event_size = sizeof (lmd_subevent_10_1_host) + totalBytes;
+  event_size = sizeof (lmd_subevent_10_1_host) * moduleCount + totalBytes;
   lwroc_reserve_event_buffer(context->lmd_stream, context->outputEventNumber++,
       event_size, 0, 0);
   lwroc_new_event(context->lmd_stream, &event, 1);
