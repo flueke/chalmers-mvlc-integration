@@ -150,46 +150,52 @@ void readout_parser_callback_eventdata(
     totalWords += moduleDataList[moduleIndex].data.size;
   }
 
-  if (totalWords > 0)
+  if (totalWords == 0)
+    return;
+
+  const size_t totalBytes = totalWords * sizeof(uint32_t);
+  struct lwroc_lmd_subevent_info sevInfo;
+  lmd_event_10_1_host *event;
+  lmd_subevent_10_1_host *sev;
+  uint8_t *buf;
+  uint8_t *end;
+  size_t event_size;
+  event_size = sizeof (lmd_subevent_10_1_host) + totalBytes;
+  lwroc_reserve_event_buffer(context->lmd_stream, context->outputEventNumber++,
+      event_size, 0, 0);
+  lwroc_new_event(context->lmd_stream, &event, 1);
+
+  for (uint32_t moduleIndex = 0; moduleIndex < moduleCount; ++moduleIndex)
   {
-    const size_t totalBytes = totalWords * sizeof(uint32_t);
-		struct lwroc_lmd_subevent_info info;
-		lmd_event_10_1_host *event;
-		lmd_subevent_10_1_host *sev;
-		void *buf;
-		void *end;
-		size_t event_size;
-		event_size = sizeof (lmd_subevent_10_1_host) + totalBytes;
-		lwroc_reserve_event_buffer(context->lmd_stream, context->outputEventNumber++,
-		    event_size, 0, 0);
-		lwroc_new_event(context->lmd_stream, &event, 1);
-		info.type = 10;
-		info.subtype = 1;
-		info.procid = 13;
-		info.control = 1;
-		info.subcrate = 0;
-		buf = lwroc_new_subevent(context->lmd_stream, LWROC_LMD_SEV_NORMAL,
-		    &sev, &info);
+    auto moduleData = moduleDataList[moduleIndex];
+    auto moduleBytes = moduleData.data.size * sizeof(uint32_t);
 
-    for (uint32_t moduleIndex = 0; moduleIndex < moduleCount; ++moduleIndex)
-    {
-      auto moduleData = moduleDataList[moduleIndex];
-      memcpy(buf, moduleData.data.data, moduleData.data.size * sizeof(uint32_t));
-    }
+    if (moduleBytes == 0)
+      continue;
 
-		end = (uint8_t *)buf + totalWords * sizeof(uint32_t);
-		lwroc_finalise_subevent(context->lmd_stream, LWROC_LMD_SEV_NORMAL,
-		    end);
-		lwroc_finalise_event_buffer(context->lmd_stream);
+    sevInfo.type = 10;
+    sevInfo.subtype = moduleIndex;
+    sevInfo.procid = 13;
+    sevInfo.control = 1;
+    sevInfo.subcrate = 0;
+    buf = (uint8_t *)lwroc_new_subevent(context->lmd_stream, LWROC_LMD_SEV_NORMAL,
+        &sev, &sevInfo);
 
-		LWROC_MON_CHECK_COPY_BLOCK(_lwroc_mon_main_handle,
-		    &_lwroc_mon_main, 0);
-		LWROC_MON_CHECK_COPY_CONN_MON_BLOCK(
-		    _lwroc_mon_main_system_handle, 0);
-
-    logger->debug("readout_parser_callback_eventdata: finalized event buffer #{} of size {} B ({} words)",
-      context->outputEventNumber-1, totalBytes, totalBytes/sizeof(uint32_t));
+    memcpy(buf, moduleData.data.data, moduleBytes);
+    end = buf + moduleBytes;
+    lwroc_finalise_subevent(context->lmd_stream, LWROC_LMD_SEV_NORMAL,
+        end);
   }
+
+  lwroc_finalise_event_buffer(context->lmd_stream);
+
+  LWROC_MON_CHECK_COPY_BLOCK(_lwroc_mon_main_handle,
+      &_lwroc_mon_main, 0);
+  LWROC_MON_CHECK_COPY_CONN_MON_BLOCK(
+      _lwroc_mon_main_system_handle, 0);
+
+  logger->trace("readout_parser_callback_eventdata: finalized event buffer #{} of size {} B ({} words)",
+    context->outputEventNumber-1, totalBytes, totalBytes/sizeof(uint32_t));
 }
 
 void readout_parser_callback_systemevent(
