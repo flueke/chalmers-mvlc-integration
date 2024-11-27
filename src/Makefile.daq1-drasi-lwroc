@@ -21,4 +21,4 @@ $(TARGET): daq1-drasi-lwroc/daq1.cc
 	$(CXX) -o $@ $^ $(LIBS) $(CPPFLAGS)
 
 clean:
-	-rm -f daq1.o $(TARGET)
+	-rm -f $(TARGET).o $(TARGET)

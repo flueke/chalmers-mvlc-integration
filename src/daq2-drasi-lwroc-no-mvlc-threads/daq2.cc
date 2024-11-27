@@ -226,11 +226,72 @@ void read_event(uint64_t cycle, uint16_t trig)
 
 void readout_loop(int *start_no_stop)
 {
+  using namespace mesytec;
+
   logger->info("entering readout_loop()");
+
+  // Max time the readout function may spend before returning. Note that this is
+  // actually dominated by the read timeout set on the underlying MVLC
+  // implementation.
+  static const std::chrono::milliseconds ReadoutMaxWait(100);
+
+  // Temp buffer to hold trailing USB data. Usually small amounts unless massive
+  // event sizes are involved. Not used for ETH. Overallocate by a lot to avoid
+  // reallocations during the run.
+  mvlc::ReadoutBuffer tmpBuffer(1u << 20);
+  std::vector<uint8_t> destBuffer(1u << 20);
+  mvlc::util::Stopwatch sw;
+
+  if (auto ec = enable_daq_mode(g_ctx.mvlc))
+  {
+    logger->error("Error enabling DAQ mode: {}", ec.message());
+    return;
+  }
+
   unsigned int cycle = 0;
 
   for (cycle = 1; !_lwroc_main_thread->_terminate; cycle++)
   {
+    mvlc::util::span<uint8_t> dest{destBuffer.data(), destBuffer.size()};
+    auto [ec, bytesRead] = mvlc::readout(g_ctx.mvlc, tmpBuffer, dest, ReadoutMaxWait);
+
+    if (ec == mvlc::ErrorType::Timeout && ec != std::errc::interrupted)
+    {
+      logger->trace("readout() timed out during cycle {}", cycle);
+      continue;
+    }
+    else if (ec)
+    {
+      logger->error("Error reading out data: {} ({})", ec.message(), ec.value());
+      break;
+    }
+
+    if (bytesRead == 0)
+    {
+      logger->warn("readout() returned 0 bytes in cycle {}", cycle);
+      continue;
+    }
+
+    auto parseResult = mvlc::readout_parser::parse_readout_buffer(
+      g_ctx.mvlc.connectionType(),
+      g_ctx.readoutParser,
+      g_ctx.parserCallbacks,
+      g_ctx.readoutParserCounters,
+      g_ctx.bufferNumber++,
+      reinterpret_cast<const uint32_t *>(dest.data()), bytesRead / sizeof(uint32_t));
+
+      if (sw.get_interval() >= std::chrono::seconds(1))
+      {
+        std::cout << "MVLC Readout Parser Counters:\n";
+        mvlc::readout_parser::print_counters(std::cout, g_ctx.readoutParserCounters);
+        sw.interval();
+      }
+  }
+
+  if (auto ec = mesytec::mvlc::disable_daq_mode(g_ctx.mvlc))
+  {
+    logger->error("Error disabling DAQ mode: {}", ec.message());
+    return;
   }
 
   logger->info("leaving readout_loop()");
