@@ -25,26 +25,6 @@ void readout_loop(int *start_no_stop);
 void cmdline_usage(void);
 int parse_cmdline_arg(const char *request);
 
-typedef size_t (*listfile_write_function)(void *userContext, const uint8_t *, size_t);
-
-struct CWriteHandle: public mesytec::mvlc::listfile::WriteHandle
-{
-  explicit CWriteHandle(listfile_write_function write, void *userContext = nullptr)
-    : write_(write)
-    , userContext_(userContext)
-  {
-    assert(write);
-  }
-
-  size_t write(const uint8_t *data, size_t size) override
-  {
-    return write_ ? write_(userContext_, data, size) : 0;
-  }
-
-  listfile_write_function write_;
-  void *userContext_;
-};
-
 extern struct lwroc_readout_functions _lwroc_readout_functions;
 extern lwroc_mon_block *_lwroc_mon_main_handle;
 extern lwroc_net_conn_monitor *_lwroc_mon_main_system_handle;
@@ -58,7 +38,6 @@ struct DaqContext
   mesytec::mvlc::readout_parser::ReadoutParserCallbacks parserCallbacks;
   mesytec::mvlc::readout_parser::ReadoutParserState readoutParser;
   mesytec::mvlc::readout_parser::ReadoutParserCounters readoutParserCounters;
-  std::unique_ptr<mesytec::mvlc::ReadoutWorker> readoutWorker;
   mesytec::mvlc::MVLC mvlc;
   size_t bufferNumber = 0;
   uint32_t outputEventNumber = 0;
@@ -86,39 +65,6 @@ void lwroc_readout_setup_functions(void)
 {
   logger->info("entering lwroc_readout_setup_functions()");
   logger->info("leaving lwroc_readout_setup_functions()");
-}
-
-
-size_t listfile_write_callback(void *userContext, const uint8_t *data, size_t size)
-{
-  auto ctx = static_cast<DaqContext *>(userContext);
-
-  assert(size % 4 == 0); // the readout buffer should only contain 32-bit words
-
-  const uint32_t *buf = reinterpret_cast<const uint32_t *>(data);
-  const size_t bufWords = size / sizeof(uint32_t);
-
-  auto parseResult = mesytec::mvlc::readout_parser::parse_readout_buffer(
-    ctx->mvlc.connectionType(),
-    ctx->readoutParser,
-    ctx->parserCallbacks,
-    ctx->readoutParserCounters,
-    ctx->bufferNumber++,
-    buf, bufWords);
-
-    if (parseResult != mesytec::mvlc::readout_parser::ParseResult::Ok)
-    {
-      logger->error("listfile_write_callback: Error parsing readout buffer: {}",
-        mesytec::mvlc::readout_parser::get_parse_result_name(parseResult));
-      return 0;
-    }
-    else
-    {
-      logger->debug("listfile_write_callback: processed buffer #{} of size {} B",
-        ctx->bufferNumber-1, size);
-    }
-
-  return 0;
 }
 
 void readout_parser_callback_eventdata(
@@ -261,17 +207,6 @@ void init(void)
   if (errorSeen)
     return;
 
-  static const uint8_t crateId = 0;
-
-  auto listfileWriteHandle = std::make_shared<CWriteHandle>(
-    listfile_write_callback, static_cast<void *>(&g_ctx));
-
-  g_ctx.readoutWorker = std::make_unique<mesytec::mvlc::ReadoutWorker>(
-    g_ctx.mvlc, listfileWriteHandle, crateId);
-
-  g_ctx.readoutWorker->setMcstDaqStartCommands(g_ctx.crateConfig.mcstDaqStart);
-  g_ctx.readoutWorker->setMcstDaqStopCommands(g_ctx.crateConfig.mcstDaqStop);
-
   g_ctx.readoutParser = mesytec::mvlc::readout_parser::make_readout_parser(
     g_ctx.crateConfig.stacks, static_cast<void *>(&g_ctx));
 
@@ -294,33 +229,8 @@ void readout_loop(int *start_no_stop)
   logger->info("entering readout_loop()");
   unsigned int cycle = 0;
 
-  if (auto ec = g_ctx.readoutWorker->start().get())
-  {
-    logger->error("Error starting readout: {}", ec.message());
-    return;
-  }
-
   for (cycle = 1; !_lwroc_main_thread->_terminate; cycle++)
   {
-    logger->trace("readout_loop(): cycle {}", cycle);
-
-    if (g_ctx.readoutWorker->state() == mesytec::mvlc::ReadoutWorker::State::Idle)
-    {
-      logger->info("readout_worker state became Idle, leaving readout_loop()");
-      break;
-    }
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  }
-
-  if (auto ec = g_ctx.readoutWorker->stop())
-  {
-    logger->warn("Error stopping readout: {}", ec.message());
-  }
-
-  while (g_ctx.readoutWorker->state() != mesytec::mvlc::ReadoutWorker::State::Idle)
-  {
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
 
   logger->info("leaving readout_loop()");

@@ -1,0 +1,24 @@
+QUIET ?= @
+
+DRASI_CONFIG=../drasi/bin/drasi-config.sh
+MVLCC_CONFIG=../external/mvlcc/bin/mvlcc-config.sh
+MVLC_DIR=../install-prefix
+
+CPPFLAGS  += $(shell $(DRASI_CONFIG) --cflags --cflags)
+LDFLAGS += $(shell $(DRASI_CONFIG) --ldflags)
+LIBS    += $(shell $(DRASI_CONFIG) --libs)
+
+CPPFLAGS:=$(CPPFLAGS) -I$(MVLC_DIR)/include -isystem $(MVLC_DIR)/include/mesytec-mvlc
+LIBS:=$(LIBS) $(shell $(MVLCC_CONFIG) --libs)
+
+.PHONY: all clean
+
+TARGET=daq2
+
+all: $(TARGET)
+
+$(TARGET): daq2-drasi-lwroc-no-mvlc-threads/daq2.cc
+	$(CXX) -o $@ $^ $(LIBS) $(CPPFLAGS)
+
+clean:
+	-rm -f $(TARGET).o $(TARGET)

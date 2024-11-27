@@ -15,7 +15,7 @@ export LD_LIBRARY_PATH=`pwd`/../install-prefix/lib:$LD_LIBRARY_PATH
 #ARCH_SUFFIX=${CC_MACHINE}_${CC_VERSION}
 #BIN_DIR="../nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}"
 #DAQ_BINARY=$BIN_DIR/m_read_meb.drasi
-DAQ_BINARY="daq1"
+DAQ_BINARY="daq2"
 
 test -x $DAQ_BINARY || {
     echo "DAQ binary not found: $DAQ_BINARY"
