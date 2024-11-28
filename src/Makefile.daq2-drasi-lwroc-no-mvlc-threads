@@ -11,7 +11,7 @@ LIBS    += $(shell $(DRASI_CONFIG) --libs)
 CPPFLAGS:=$(CPPFLAGS) -I$(MVLC_DIR)/include -isystem $(MVLC_DIR)/include/mesytec-mvlc
 LIBS:=$(LIBS) $(shell $(MVLCC_CONFIG) --libs)
 
-CPPFLAGS:=$(CPPFLAGS) -g -ggdb
+CPPFLAGS:=$(CPPFLAGS) -g -ggdb -O
 
 .PHONY: all clean
 

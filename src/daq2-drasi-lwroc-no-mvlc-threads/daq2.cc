@@ -40,7 +40,7 @@ struct DaqContext
   mesytec::mvlc::readout_parser::ReadoutParserState readoutParser;
   mesytec::mvlc::readout_parser::ReadoutParserCounters readoutParserCounters;
   mesytec::mvlc::MVLC mvlc;
-  size_t bufferNumber = 0;
+  size_t bufferNumber = 1;
   uint32_t outputEventNumber = 0;
 };
 
