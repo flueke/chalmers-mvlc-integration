@@ -34,6 +34,7 @@ struct DaqContext
 {
   lmd_stream_handle *lmd_stream = nullptr;
   const char *crateConfigFilename = nullptr;
+  const char *mvlcOverrideUrl = nullptr;
   mesytec::mvlc::CrateConfig crateConfig;
   mesytec::mvlc::readout_parser::ReadoutParserCallbacks parserCallbacks;
   mesytec::mvlc::readout_parser::ReadoutParserState readoutParser;
@@ -171,7 +172,15 @@ void init(void)
     return;
   }
 
-  g_ctx.mvlc = mesytec::mvlc::make_mvlc(g_ctx.crateConfig);
+  if (g_ctx.mvlcOverrideUrl)
+  {
+    g_ctx.mvlc = mesytec::mvlc::make_mvlc(g_ctx.mvlcOverrideUrl);
+  }
+  else
+  {
+    g_ctx.mvlc = mesytec::mvlc::make_mvlc(g_ctx.crateConfig);
+  }
+
   g_ctx.mvlc.setDisableTriggersOnConnect(true);
 
   if (auto ec = g_ctx.mvlc.connect())
@@ -242,10 +251,48 @@ void readout_loop(int *start_no_stop)
   std::vector<uint8_t> destBuffer(1u << 20);
   mvlc::util::Stopwatch sw;
 
+  // Send an initial empty frame to the UDP data pipe port so that
+  // the MVLC knows where to send the readout data.
+  if (auto ec = redirect_eth_data_stream(g_ctx.mvlc))
+  {
+    logger->error("Failed to redirect MVLC ETH data stream: {}", ec.message());
+    return;
+  }
+
+  // Enables trigger processing of the MVLC. It is assumed that modules are
+  // initialized and 'ready' at this point but not yet started.
   if (auto ec = enable_daq_mode(g_ctx.mvlc))
   {
     logger->error("Error enabling DAQ mode: {}", ec.message());
     return;
+  }
+
+  // Run the MCST DAQ start sequence to get fully synchronized startup for all
+  // modules in the crate. The default script in mvme contains this:
+  //   # Start the acquisition sequence for all modules via the events multicast address.
+  //   writeabs a32 d16 0x${mesy_mcst}00603a      0   # stop acq
+  //   writeabs a32 d16 0x${mesy_mcst}006090      3   # reset CTRA and CTRB
+  //   writeabs a32 d16 0x${mesy_mcst}00603c      1   # FIFO reset
+  //   writeabs a32 d16 0x${mesy_mcst}00603a      1   # start acq
+  //   writeabs a32 d16 0x${mesy_mcst}006034      1   # readout reset
+  {
+    auto mcstResults = run_commands(g_ctx.mvlc, g_ctx.crateConfig.mcstDaqStart);
+    bool errorSeen = false;
+
+    for (const auto &result: mcstResults)
+    {
+      if (result.ec)
+      {
+        logger->error("Error running MCST DAQ start command '{}': {}",
+          to_string(result.cmd), result.ec.message());
+      }
+      else
+        logger->info("MCST DAQ start '{}': {}",
+          to_string(result.cmd), result.ec.message());
+    }
+
+    if (errorSeen)
+      return;
   }
 
   unsigned int cycle = 0;
@@ -280,12 +327,35 @@ void readout_loop(int *start_no_stop)
       g_ctx.bufferNumber++,
       reinterpret_cast<const uint32_t *>(dest.data()), bytesRead / sizeof(uint32_t));
 
-      if (sw.get_interval() >= std::chrono::seconds(1))
+      if (sw.get_interval() >= std::chrono::seconds(2))
       {
         std::cout << "MVLC Readout Parser Counters:\n";
         mvlc::readout_parser::print_counters(std::cout, g_ctx.readoutParserCounters);
         sw.interval();
       }
+  }
+
+  // Stop sequence. Note: If doing this perfectly the readout should continue in
+  // parallel to sending the stop sequence and until no more data arrives.
+
+  // Run the MCST daq stop sequence to get a synchronized 'stop acq' for all modules.
+  // Default script in mvme:
+  //   writeabs a32 d16 0x${mesy_mcst}00603a     0   # stop acquisition
+  {
+    auto mcstResults = run_commands(g_ctx.mvlc, g_ctx.crateConfig.mcstDaqStop);
+    for (const auto &result: mcstResults)
+    {
+      if (result.ec)
+      {
+        logger->warn("Error running MCST DAQ start command '{}': {}",
+          to_string(result.cmd), result.ec.message());
+      }
+      else
+      {
+        logger->info("MCST DAQ stop '{}': {}",
+          to_string(result.cmd), result.ec.message());
+      }
+    }
   }
 
   if (auto ec = mesytec::mvlc::disable_daq_mode(g_ctx.mvlc))
@@ -300,6 +370,7 @@ void readout_loop(int *start_no_stop)
 void cmdline_usage(void)
 {
   printf ("  --mvlc-crateconfig=<crateconfig.yaml>            mvlc createconfig file.\n");
+  printf (" [--mvlc=<url>]                                    overrides mvlc from the crateconfig.\n");
   printf ("  --log-level=error|warn|info|debug|trace          set main log level.\n");
   printf ("  --mvlc-log-level=error|warn|info|debug|trace     set mesytec-mvlc library log level.\n");
   printf ("\n");
@@ -320,6 +391,10 @@ int parse_cmdline_arg(const char *request)
   else if (LWROC_MATCH_C_PREFIX("--mvlc-crateconfig=", post))
   {
     g_ctx.crateConfigFilename = post;
+  }
+  else if (LWROC_MATCH_C_PREFIX("--mvlc=", post))
+  {
+    g_ctx.mvlcOverrideUrl = post;
   }
   else
     return 0;
