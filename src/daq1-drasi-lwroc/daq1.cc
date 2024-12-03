@@ -1,6 +1,8 @@
 #include <cassert>
 #include <cstdint>
 #include <mesytec-mvlc/mesytec-mvlc.h>
+#include <spdlog/spdlog-inl.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 extern "C"
 {
@@ -68,8 +70,11 @@ DaqContext g_ctx;
 
 void lwroc_readout_pre_parse_functions(void)
 {
-  logger = mesytec::mvlc::get_logger("daq1");
-  logger->set_level(spdlog::level::info);
+  if (!logger)
+  {
+    logger = spdlog::stdout_color_mt("daq1");
+    logger->set_level(spdlog::level::info);
+  }
   logger->info("entered lwroc_readout_pre_parse_functions()");
 
   _lwroc_readout_functions.init = init;
