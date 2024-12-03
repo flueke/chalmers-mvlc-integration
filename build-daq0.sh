@@ -62,7 +62,7 @@ make -j$MAKEJOBS -C nurdlib showconfig
 
 cat nurdlib/build_cc_${ARCH_SUFFIX}_${BUILD_TYPE}/nconf/module/map/map.h.log
 # Remove the symlink to caller.sh and replay it with the actualy binary.
-cd nurdlib/bin && ln -sf ../../$DAQ_BINARY daq0
+cd nurdlib/bin && ln -sf ../../$DAQ_BINARY daq0;cd -
 
 # For some reason ucesb builds when the tree is clean. The second time around it
 # starts to run an hbook/example/ext_writer_test that never returns. git clean
@@ -70,3 +70,12 @@ cd nurdlib/bin && ln -sf ../../$DAQ_BINARY daq0
 # Update: I think this might be related to shared memory inside the container.
 #make -j$MAKEJOBS -C ucesb all-clean
 #make -j$MAKEJOBS -C ucesb empty
+cd src
+make -f Makefile.daq1-drasi-lwroc clean
+make -f Makefile.daq1-drasi-lwroc
+
+make -f Makefile.daq2-drasi-lwroc-no-mvlc-threads clean
+make -f Makefile.daq2-drasi-lwroc-no-mvlc-threads
+
+make -f Makefile.daq3-nurdlib clean
+make -f Makefile.daq3-nurdlib
