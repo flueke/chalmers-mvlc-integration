@@ -22,3 +22,9 @@ CMakeUserPresets.json
 /ucesb
 src/*.o
 src/daq?
+# mvme files
+**/logs/*
+**/run_logs/*
+mvmeworkspace.ini
+**/sessions/*.msess
+vme_tree_ui_state.ini
