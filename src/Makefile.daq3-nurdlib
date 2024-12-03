@@ -21,6 +21,7 @@ CPPFLAGS:=$(CPPFLAGS) -I$(MVLC_DIR)/include -isystem $(MVLC_DIR)/include/mesytec
 CPPFLAGS:=$(CPPFLAGS) -Wno-literal-suffix # suppress a C++ PRIz related warning
 CPPFLAGS:=$(CPPFLAGS) -Wno-register # suppress warnings about 'register' keyword not being a c++ thing
 CPPFLAGS:=$(CPPFLAGS) -fpermissive # LOGL() void * -> LogFile * conversion
+CPPFLAGS:=$(CPPFLAGS) -Wno-dangling-reference # silence spdlog+gcc-14 warnings
 
 LIBS:=$(shell $(DRASI_CONFIG) --f-user-daq --mbscompat --libs) -L${NURDLIB_PATH}/${BUILD_DIR} -lnurdlib
 LIBS:=$(LIBS) $(shell $(MVLCC_CONFIG) --libs)
@@ -42,10 +43,10 @@ endif
 
 TARGET=daq2
 
-$(TARGET): daq2-nurdlib-triggered/daq2.cc
+$(TARGET): daq3-nurdlib/daq3.cc
 	$(CXX) -o $@ $^ $(LIBS) $(CPPFLAGS)
 
 all: $(TARGET)
 
 clean:
-	-rm -f daq2.o $(TARGET)
+	-rm -f $(TARGET).o $(TARGET)
