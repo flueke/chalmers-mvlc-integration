@@ -228,6 +228,12 @@ static mesytec::mvlc::StackCommandBuilder make_module_readout_commands(const std
 	return result;
 }
 
+uint32_t module_get_vme_address(struct Module *mod)
+{
+	auto theMap = mod->props->get_map(mod);
+	return theMap->address;
+}
+
 static mesytec::mvlc::StackCommandBuilder make_crate_readout_commands(Crate *crate)
 {
 	const size_t moduleCount = crate_module_get_num(crate);
@@ -236,17 +242,16 @@ static mesytec::mvlc::StackCommandBuilder make_crate_readout_commands(Crate *cra
 
 	for (size_t mi=0; mi<moduleCount; ++mi)
 	{
-		struct Module *mod = crate_module_get(crate, mi);
+		struct Module *mod = crate_module_get_by_index(crate, mi);
 
 		if (mod)
 		{
 			auto typeString = mesytec::mvlc::str_tolower(keyword_get_string(mod->type));
-			auto theMap = mod->props->get_map(mod);
-			auto vmeAddress = theMap->address;
+			uint32_t vmeAddress = module_get_vme_address(mod);
 
 			LOGF(info)(LOGL, "Module: idx=%lu, typename=%s, vmeAddress=0x%08x", mi, typeString.c_str(), vmeAddress);
 
-			auto modReadoutCommands = make_module_readout_commands(typeString);
+			auto modReadoutCommands = make_module_readout_commands(typeString, vmeAddress);
 
 			result.beginGroup(fmt::format("{}_0x{:08x}", typeString, vmeAddress));
 			for (auto &cmd: modReadoutCommands.getCommands())

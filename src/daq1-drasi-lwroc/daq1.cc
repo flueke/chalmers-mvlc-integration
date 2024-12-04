@@ -178,8 +178,10 @@ void readout_parser_callback_eventdata(
     if (moduleBytes == 0)
       continue;
 
+    uint16_t linear_index = ((eventIndex & 0xff) << 8) | (moduleIndex & 0xff);
+
     sevInfo.type = 10;
-    sevInfo.subtype = moduleIndex;
+    sevInfo.subtype = linear_index;
     sevInfo.procid = 13;
     sevInfo.control = 1;
     sevInfo.subcrate = 0;

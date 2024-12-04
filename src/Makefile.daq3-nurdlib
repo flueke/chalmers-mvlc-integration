@@ -41,7 +41,7 @@ endif
 
 .PHONY: all clean
 
-TARGET=daq2
+TARGET=daq3
 
 $(TARGET): daq3-nurdlib/daq3.cc
 	$(CXX) -o $@ $^ $(LIBS) $(CPPFLAGS)
