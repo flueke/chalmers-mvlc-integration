@@ -77,5 +77,5 @@ make -f Makefile.daq1-drasi-lwroc
 make -f Makefile.daq2-drasi-lwroc-no-mvlc-threads clean
 make -f Makefile.daq2-drasi-lwroc-no-mvlc-threads
 
-make -f Makefile.daq3-nurdlib clean
-make -f Makefile.daq3-nurdlib
+#make -f Makefile.daq3-nurdlib clean
+#make -f Makefile.daq3-nurdlib
