@@ -171,6 +171,59 @@
                     "ignoreFailures": true
                 }
             ],
+        },
+        {
+            "name": "(gdb) mvlcc unit tests",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/external/mvlcc/test/test_mvlcc_wrap",
+            "args": [
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/external/mvlcc/test",
+            "environment": [
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+        },
+        {
+            "name": "(gdb) mvlcc_mini_daq",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/external/mvlcc/example/mvlcc_mini_daq",
+            "args": [
+                "${workspaceFolder}/src/01-mdpp16_scp-x2-high_rate_noise.yaml"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/external/mvlcc/example",
+            "environment": [
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
         }
     ]
 }
