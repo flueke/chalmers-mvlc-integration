@@ -38,6 +38,7 @@ cmake --build $MVLC_SRC/build -j$MAKEJOBS --target install
 
 ## mvlcc
 make -j$MAKEJOBS -C external/mvlcc
+make -j$MAKEJOBS -C external/mvlcc test
 make -j$MAKEJOBS -C external/mvlcc/example
 
 echo "MVLC_DIR=$MVLC_DIR"
