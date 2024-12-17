@@ -251,7 +251,7 @@ static mesytec::mvlc::StackCommandBuilder make_crate_readout_commands(Crate *cra
 
 			LOGF(info)(LOGL, "Module: idx=%lu, typename=%s, vmeAddress=0x%08x", mi, typeString.c_str(), vmeAddress);
 
-			auto modReadoutCommands = make_module_readout_commands(typeString, vmeAddress);
+			auto modReadoutCommands = make_module_readout_commands(typeString);
 
 			result.beginGroup(fmt::format("{}_0x{:08x}", typeString, vmeAddress));
 			for (auto &cmd: modReadoutCommands.getCommands())

@@ -17,11 +17,9 @@ CPPFLAGS:=$(CPPFLAGS) -DFUSER_DRASI=1 $(shell $(DRASI_CONFIG) --f-user-header --
 CPPFLAGS:=$(CPPFLAGS) -Wall -Wextra -ggdb -Wshadow -fdiagnostics-color=auto -fPIC -std=c++17
 CPPFLAGS:=$(CPPFLAGS) $(shell $(MVLCC_CONFIG) --cflags)
 CPPFLAGS:=$(CPPFLAGS) -I$(MVLC_DIR)/include -isystem $(MVLC_DIR)/include/mesytec-mvlc
-#CPPFLAGS:=$(CPPFLAGS) -Wno-dangling-reference # silence erroneous spdlog warnings emitted by some g++ versions.
 CPPFLAGS:=$(CPPFLAGS) -Wno-literal-suffix # suppress a C++ PRIz related warning
 CPPFLAGS:=$(CPPFLAGS) -Wno-register # suppress warnings about 'register' keyword not being a c++ thing
 CPPFLAGS:=$(CPPFLAGS) -fpermissive # LOGL() void * -> LogFile * conversion
-CPPFLAGS:=$(CPPFLAGS) -Wno-dangling-reference # silence spdlog+gcc-14 warnings
 
 LIBS:=$(shell $(DRASI_CONFIG) --f-user-daq --mbscompat --libs) -L${NURDLIB_PATH}/${BUILD_DIR} -lnurdlib
 LIBS:=$(LIBS) $(shell $(MVLCC_CONFIG) --libs)
