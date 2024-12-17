@@ -1,6 +1,8 @@
 Based on info from [subexp-daq](https://fy.chalmers.se/subatom/subexp-daq/) and
 [minidaq_v2718_mdpp16.txt](https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16.txt)
 
+Contact: f.lueke@mesytec.com
+
 # General
 
 To build everything:
@@ -210,3 +212,9 @@ vscode.
 Submodules currently use absolute paths, but relative submodules paths are
 possible too. This makes it simpler to move projects from one host to another
 but also forces users to host copies of the submodules repositories too.
+
+# Issues
+
+When merging in the upstream changes to nurdlib the SiCy DAQ does not work
+anymore. I think the macro in map_mvlc.c somehow swallows any error output. Not
+sure. So the current nurdlib in this project is a bit behind the upstream one.
