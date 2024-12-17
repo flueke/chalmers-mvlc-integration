@@ -28,3 +28,5 @@ src/daq?
 mvmeworkspace.ini
 **/sessions/*.msess
 vme_tree_ui_state.ini
+.analysis_autosave.analysis
+.vme_autosave.vme
