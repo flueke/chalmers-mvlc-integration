@@ -51,11 +51,11 @@
                 "--max-ev-interval=50s",
                 "--log",
                 "--server=trans",
-                "--mvlc-crateconfig=01-mdpp16_scp.yaml",
+                "--mvlc-crateconfig=chalmers-mvme-dev-workspace/01-mdpp16_scp.yaml",
                 "--log-level=debug"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/src",
+            "cwd": "${workspaceFolder}",
             "environment": [
                 {"name": "NURDLIB_DEF_PATH", "value": "/${workspaceFolder}/nurdlib/cfg/default"},
                 {"name": "LD_LIBRARY_PATH", "value": "/${workspaceFolder}/install-prefix/lib"},
@@ -91,10 +91,10 @@
                 "--max-ev-interval=50s",
                 "--log",
                 "--server=trans",
-                "--mvlc-crateconfig=01-mdpp16_scp.yaml"
+                "--mvlc-crateconfig=chalmers-mvme-dev-workspace/01-mdpp16_scp.yaml"
             ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/src",
+            "cwd": "${workspaceFolder}",
             "environment": [
                 {"name": "NURDLIB_DEF_PATH", "value": "/${workspaceFolder}/nurdlib/cfg/default"},
                 {"name": "LD_LIBRARY_PATH", "value": "/${workspaceFolder}/install-prefix/lib"},
@@ -204,7 +204,8 @@
             "request": "launch",
             "program": "${workspaceFolder}/external/mvlcc/example/mvlcc_mini_daq",
             "args": [
-                "${workspaceFolder}/src/01-mdpp16_scp.yaml",
+                "${workspaceFolder}/chalmers-mvme-dev-workspace/01-mdpp16_scp.yaml",
+                "10",
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/external/mvlcc/example",
