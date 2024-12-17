@@ -35,4 +35,5 @@ exec gdb -ex r --args $DAQ_BINARY \
         --server=trans \
         --log-level=info \
         --mvlc-log-level=info \
-        --mvlc-crateconfig=01-mdpp16_scp.yaml
+        --mvlc-crateconfig=../chalmers-mvme-dev-workspace/01-mdpp16_scp.yaml \
+        "$@"
