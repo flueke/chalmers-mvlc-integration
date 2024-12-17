@@ -199,3 +199,14 @@ which I'd also like to use for the mvlcc code.
 
 Code added/modified in other projects is under the license of the parent
 project.
+
+# Dev setup
+
+Currently using vscode with the C/C++ and vim extensions. A launch.json file is
+included with entries for daq1, daq2 and the mvlcc_mini_daq. Debugging with gdb
+works, Makefile integration does not so I'm running build-daqs.sh outside of
+vscode.
+
+Submodules currently use absolute paths, but relative submodules paths are
+possible too. This makes it simpler to move projects from one host to another
+but also forces users to host copies of the submodules repositories too.
