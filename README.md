@@ -82,9 +82,9 @@ Unfinished, was trying to get crate/module information from the nurdlib config s
 
 * mesytec-mvlc:
 
-  * [mesytec-mvlc Readme](external/mesytec-mvlc/README.md)
-  * [mesytec-mvlc Command format](external/mesytec-mvlc/doc/command_format.md)
-  * [mesytec-mvlc Data format](external/mesytec-mvlc/doc/data_format.md)
+  * [mesytec-mvlc Readme](https://github.com/flueke/mesytec-mvlc/blob/main/README.md)
+  * [mesytec-mvlc Command format](https://github.com/flueke/mesytec-mvlc/blob/main/doc/command_format.md)
+  * [mesytec-mvlc Data format](https://github.com/flueke/mesytec-mvlc/blob/main/doc/data_format.md)
 
 * mvme (contains some info about the Trigger/IO system):
   * [mvme manual](https://mesytec.com/downloads/mvme/mvme.pdf)
