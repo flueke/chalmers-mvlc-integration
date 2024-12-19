@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1.5
 # vim:ft=dockerfile
 
+# docker build .
+
 FROM debian:bullseye as build
 
 ARG UID=1000
@@ -15,9 +17,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN apt-get install -y --no-install-recommends vim file bash-completion less gdb bsdextrautils tmux iputils-ping
 RUN echo "set nocompatible\nset bg=dark\nsyntax enable\n" >> ~/.vimrc
 
-RUN adduser -u $UID daq
-USER daq
+#RUN adduser -u $UID daq
+#USER daq
 
 COPY . /sources/
 WORKDIR /sources
-RUN build-daqs.sh
+RUN ./build-daqs.sh

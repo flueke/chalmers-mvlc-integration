@@ -2,9 +2,6 @@
 # https://fy.chalmers.se/subatom/subexp-daq/minidaq_v2718_mdpp16.txt
 # Author: Florian Lüke <f.lueke@mesytec.com>
 
-set -e
-set -x
-
 # Clean some of the repos to remove build artifacts. Dangerous if your stuff is
 # not commited or checked into the index!
 #for d in external/{drasi,nurdlib,ucesb,mvlcc}; do

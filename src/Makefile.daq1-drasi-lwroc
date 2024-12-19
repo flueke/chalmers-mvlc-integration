@@ -8,7 +8,8 @@ CPPFLAGS  += $(shell $(DRASI_CONFIG) --cflags --cflags)
 LDFLAGS += $(shell $(DRASI_CONFIG) --ldflags)
 LIBS    += $(shell $(DRASI_CONFIG) --libs)
 
-CPPFLAGS:=$(CPPFLAGS) -I$(MVLC_DIR)/include -isystem $(MVLC_DIR)/include/mesytec-mvlc
+CPPFLAGS:=$(CPPFLAGS) -I$(MVLC_DIR)/include -isystem $(MVLC_DIR)/include/mesytec-mvlc -std=c++17
+#CPPFLAGS:=$(CPPFLAGS) $(shell $(MVLCC_CONFIG) --cflags)
 LIBS:=$(LIBS) $(shell $(MVLCC_CONFIG) --libs)
 
 CPPFLAGS:=$(CPPFLAGS) -g -ggdb
