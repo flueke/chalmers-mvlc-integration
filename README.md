@@ -126,7 +126,7 @@ part reads out all events, not just a single one in case of multi event
 readouts. MVLC would need to be triggered via VME IRQ or NIM input.
 
 - init for mesytec modules. caen might offer a similar interface.
-```
+```ini
 0x601C 0    # 0 -> the following register specifies the number of events
 0x601E 12   # IRQ-FIFO threshold, events (raise IRQ when 12 events are in the buffer)
 0x6036 0xb  # 0xb -> multievent, transmits number of events specified
@@ -137,7 +137,7 @@ readouts. MVLC would need to be triggered via VME IRQ or NIM input.
 
 - readout script in mvme
 
-```
+```ini
 # readout_dt
 read a32 d16 0x6092 # evctr_lo
 read a32 d16 0x6094 # evctr_hi
@@ -146,9 +146,7 @@ read a32 d16 0x6030 # buffer_data_length
 mbltfifo a32 0x0000 65535
 ```
 
-- readout_parser output:
-
-With the above readout, parsed data will look like this
+- With the above readout, parsed data will look like this
 (``mvlcc_module_data_t`` from
 [mvlcc_wrap.h](external/mvlcc/include/mvlcc_wrap.h)).
 
@@ -157,18 +155,22 @@ module_data.prefix = { evctr_lo, evctr_hi, buffer_data_length }
 module_data.dynamic = { block read data until berr. multiple events if setup for multievent }
 ```
 
-- Split `ModuleProps.readout_dt()` into `handle_dt()` and `check_dt()`:
+- Split `ModuleProps.readout_dt()` into `handle_dt()` and `check_dt()`.  `handle_dt()` gets the *prefix* part and assigns to the Module instance:
+```C
+void mxdc32_handle_dt(a_mxdc32, const u32 *data, size_t size)
+{
+  a_mxdc32->module.event_counter_value = data[0] | (data[1] << 16);
+  a_mxdc32->buffer_data_length = data[2];
+}
+```
 
-handle_dt() gets the *prefix* part and assigns to the Module instance:
-```
-a_mxdc32->module.event_counter_value = data[0] | (data[1] << 16);
-a_mxdc32->buffer_data_length = data[3];
-```
-
-check_dt() is called after handle_dt():
-```
-if (a_mxdc32->module.event_counter_value == 42) // Whatever checks need to be done.
-  return CRATE_READOUT_FAIL_GENERAL;
+`check_dt()` is called after `handle_dt()`:
+```C
+void mxdc32_check_dt(a_mxdc32)
+{
+  if (a_mxdc32->module.event_counter_value == 42) // Whatever checks need to be done.
+    return CRATE_READOUT_FAIL_GENERAL;
+}
 ```
 
 Have to add custom config and readouts for all modules. Could load these from
