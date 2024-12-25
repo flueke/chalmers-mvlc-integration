@@ -1,0 +1,270 @@
+{
+    "DAQConfig": {
+        "enabled": true,
+        "events": [
+            {
+                "enabled": true,
+                "id": "{f108a6a4-1420-45fc-9778-201c2ab21027}",
+                "irqLevel": 1,
+                "irqVector": 0,
+                "modules": [
+                    {
+                        "baseAddress": 0,
+                        "enabled": true,
+                        "id": "{82e3516f-6e79-4cbd-af2b-35b8c60bb624}",
+                        "initScripts": [
+                            {
+                                "enabled": true,
+                                "id": "{4b80c4f1-4e7a-48d2-8747-f75a8cf86187}",
+                                "name": "Module Init",
+                                "variable_table": {
+                                    "name": "",
+                                    "variables": {
+                                    }
+                                },
+                                "vme_script": "## Parameters\n"
+                            }
+                        ],
+                        "name": "user01",
+                        "type": "user01",
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        },
+                        "vmeReadout": {
+                            "enabled": true,
+                            "id": "{ec0dfe45-2bdc-4ad3-aff2-c31f48de254b}",
+                            "name": "Module Readout",
+                            "properties": {
+                                "icon": ":/vme_script.png"
+                            },
+                            "variable_table": {
+                                "name": "",
+                                "variables": {
+                                }
+                            },
+                            "vme_script": "marker 0xaabbcc00\nmarker 0xaabbcc01\nmarker 0xaabbcc02\nmarker 0xaabbcc03\nmarker 0xaabbcc04\nmarker 0xaabbcc05\nmarker 0xaabbcc06\nmarker 0xaabbcc07\nmarker 0xaabbcc08\nmarker 0xaabbcc09\nmarker 0xaabbcc0a\nmarker 0xaabbcc0b\nmarker 0xaabbcc0c\nmarker 0xaabbcc0d\nmarker 0xaabbcc0e\nmarker 0xaabbcc0f\nmarker 0xaabbcc10\nmarker 0xaabbcc11\nmarker 0xaabbcc12\nmarker 0xaabbcc13\nmarker 0xaabbcc14\nmarker 0xaabbcc15\nmarker 0xaabbcc16\nmarker 0xaabbcc17\nmarker 0xaabbcc18\nmarker 0xaabbcc19\nmarker 0xaabbcc1a\nmarker 0xaabbcc1b\nmarker 0xaabbcc1c\nmarker 0xaabbcc1d\nmarker 0xaabbcc1e\nmarker 0xaabbcc1f\nmarker 0xaabbcc20\nmarker 0xaabbcc21"
+                        },
+                        "vmeReset": {
+                            "enabled": true,
+                            "id": "{3e6569ff-438e-49eb-954c-d8aa657df4c0}",
+                            "name": "Module Reset",
+                            "properties": {
+                                "icon": ":/vme_script.png"
+                            },
+                            "variable_table": {
+                                "name": "",
+                                "variables": {
+                                }
+                            },
+                            "vme_script": "# Reset the module to a clean default state here. This is executed before\n# initializing the modules at DAQ start time.\n"
+                        }
+                    }
+                ],
+                "name": "event0",
+                "scalerReadoutFrequency": 0,
+                "scalerReadoutPeriod": 2,
+                "triggerCondition": "MVLC Trigger I/O",
+                "triggerOptions": {
+                    "IRQUseIACK": false,
+                    "sis3153.timer_period": 1
+                },
+                "variable_table": {
+                    "name": "",
+                    "variables": {
+                        "mesy_eoe_marker": {
+                            "comment": "EndOfEvent marker for mesytec modules (0: eventcounter, 1: timestamp, 3: extended_timestamp).",
+                            "definitionLocation": "",
+                            "value": "1"
+                        },
+                        "mesy_mcst": {
+                            "comment": "The most significant byte of the 32-bit multicast address to be used by this event.",
+                            "definitionLocation": "",
+                            "value": "bb"
+                        },
+                        "mesy_readout_num_events": {
+                            "comment": "Number of events to read out in each cycle.",
+                            "definitionLocation": "",
+                            "value": "1"
+                        },
+                        "sys_irq": {
+                            "comment": "IRQ value set for the VME Controller for this event.",
+                            "definitionLocation": "",
+                            "value": "0"
+                        }
+                    }
+                },
+                "vme_scripts": {
+                    "daq_start": {
+                        "enabled": true,
+                        "id": "{d022c1c5-b19e-4b14-8857-593047f3da44}",
+                        "name": "DAQ Start",
+                        "properties": {
+                            "icon": ":/vme_script.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        },
+                        "vme_script": ""
+                    },
+                    "daq_stop": {
+                        "enabled": true,
+                        "id": "{c2d412ab-921c-4e79-a3cd-27ec50fd2ade}",
+                        "name": "DAQ Stop",
+                        "properties": {
+                            "icon": ":/vme_script.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        },
+                        "vme_script": ""
+                    },
+                    "readout_end": {
+                        "enabled": true,
+                        "id": "{1c54abf0-9f0b-42e0-9aec-8d1fa8393859}",
+                        "name": "Cycle End",
+                        "properties": {
+                            "icon": ":/vme_script.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        },
+                        "vme_script": ""
+                    },
+                    "readout_start": {
+                        "enabled": true,
+                        "id": "{97c10fc9-7eb4-4086-852b-2fd8374b0096}",
+                        "name": "Cycle Start",
+                        "properties": {
+                            "icon": ":/vme_script.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        },
+                        "vme_script": "# Commands executed at the start of each readout cycle\n"
+                    }
+                }
+            }
+        ],
+        "global_objects": {
+            "children": [
+                {
+                    "class": "ContainerObject",
+                    "data": {
+                        "children": [
+                        ],
+                        "enabled": true,
+                        "id": "{8fa828ce-eeba-4d28-ad3b-58d9653b592e}",
+                        "name": "daq_start",
+                        "properties": {
+                            "display_name": "DAQ Start",
+                            "icon": ":/folder_orange.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "ContainerObject",
+                    "data": {
+                        "children": [
+                        ],
+                        "enabled": true,
+                        "id": "{e2d803dc-1eff-43b4-b502-d84bcc3f758d}",
+                        "name": "daq_stop",
+                        "properties": {
+                            "display_name": "DAQ Stop",
+                            "icon": ":/folder_orange.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "ContainerObject",
+                    "data": {
+                        "children": [
+                        ],
+                        "enabled": true,
+                        "id": "{c989864e-02d0-4203-a753-98b492a057d2}",
+                        "name": "manual",
+                        "properties": {
+                            "display_name": "Manual",
+                            "icon": ":/folder_orange.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        }
+                    }
+                },
+                {
+                    "class": "VMEScriptConfig",
+                    "data": {
+                        "enabled": true,
+                        "id": "{1efdc156-5b90-4ed6-ab21-140db4d493a1}",
+                        "name": "mvlc_trigger_io",
+                        "properties": {
+                            "display_name": "MVLC Trigger/IO",
+                            "icon": ":/vme_module.png"
+                        },
+                        "variable_table": {
+                            "name": "",
+                            "variables": {
+                            }
+                        },
+                        "vme_script": "##############################################################\n# MVLC Trigger I/O  setup via internal VME interface         #\n##############################################################\n\n# Note: This file was generated by mvme. Editing existing\n# values is allowed and these changes will used by mvme\n# when next parsing the script. Changes to the basic\n# structure, like adding new write or read commands, are not\n# allowed. These changes will be lost the next time the file\n# is modified by mvme.\n\n# The initialization commands for each Trigger I/O unit are\n# wrapped in mvlc_stack_begin/end blocks. This is to ensure\n# the commands are executed atomically without being\n# interleaved by other commands also touching the Trigger I/O\n# system, e.g. the routine for readout of the builtin DSO.\n\n# Check for minimum required mvme version\nmvme_require_version 1.9.1\n\n# Internal MVLC VME interface address\nsetbase 0xffff0000\n\n# Level0 #####################################################\n\n# timer0\nmvlc_stack_begin\n  0x0200 0x0000    # select L0.Unit0\n  0x0302      0    # range (0:ns, 1:us, 2:ms, 3:s)\n  0x0304      0    # delay [ns]\n  0x0306      0    # period [in range units]\nmvlc_stack_end\n\n# timer1\nmvlc_stack_begin\n  0x0200 0x0001    # select L0.Unit1\n  0x0302      0    # range (0:ns, 1:us, 2:ms, 3:s)\n  0x0304      0    # delay [ns]\n  0x0306      0    # period [in range units]\nmvlc_stack_end\n\n# timer2\nmvlc_stack_begin\n  0x0200 0x0002    # select L0.Unit2\n  0x0302      0    # range (0:ns, 1:us, 2:ms, 3:s)\n  0x0304      0    # delay [ns]\n  0x0306      0    # period [in range units]\nmvlc_stack_end\n\n# timer3\nmvlc_stack_begin\n  0x0200 0x0003    # select L0.Unit3\n  0x0302      0    # range (0:ns, 1:us, 2:ms, 3:s)\n  0x0304      0    # delay [ns]\n  0x0306      0    # period [in range units]\nmvlc_stack_end\n\n# trigger_resource0\nmvlc_stack_begin\n  0x0200 0x0004    # select L0.Unit4\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# trigger_resource1\nmvlc_stack_begin\n  0x0200 0x0005    # select L0.Unit5\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# trigger_resource2\nmvlc_stack_begin\n  0x0200 0x0006    # select L0.Unit6\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# trigger_resource3\nmvlc_stack_begin\n  0x0200 0x0007    # select L0.Unit7\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# trigger_resource4\nmvlc_stack_begin\n  0x0200 0x0008    # select L0.Unit8\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# trigger_resource5\nmvlc_stack_begin\n  0x0200 0x0009    # select L0.Unit9\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# trigger_resource6\nmvlc_stack_begin\n  0x0200 0x000a    # select L0.Unit10\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# trigger_resource7\nmvlc_stack_begin\n  0x0200 0x000b    # select L0.Unit11\n  0x0380      0    # type: 0=IRQ, 1=SoftTrigger, 2=SlaveTrigger\n  0x0300      0    # irq_index (zero-based: 0: IRQ1, .., 6: IRQ7)\n  0x0306      0    # slave_trigger: delay [ns]\n  0x0308      0    # slave_trigger: width [ns]\n  0x030a      0    # slave_trigger: holdoff [ns]\n  0x030c      0    # slave_trigger: invert (start on trailing edge of input)\n  0x0382      0    # slave trigger number (0..3)\nmvlc_stack_end\n\n# stack_busy0\nmvlc_stack_begin\n  0x0200 0x000c    # select L0.Unit12\n  0x0300      0    # stack_index\nmvlc_stack_end\n\n# stack_busy1\nmvlc_stack_begin\n  0x0200 0x000d    # select L0.Unit13\n  0x0300      0    # stack_index\nmvlc_stack_end\n\n# NIM0\nmvlc_stack_begin\n  0x0200 0x0010    # select L0.Unit16\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM1\nmvlc_stack_begin\n  0x0200 0x0011    # select L0.Unit17\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM2\nmvlc_stack_begin\n  0x0200 0x0012    # select L0.Unit18\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM3\nmvlc_stack_begin\n  0x0200 0x0013    # select L0.Unit19\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM4\nmvlc_stack_begin\n  0x0200 0x0014    # select L0.Unit20\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM5\nmvlc_stack_begin\n  0x0200 0x0015    # select L0.Unit21\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM6\nmvlc_stack_begin\n  0x0200 0x0016    # select L0.Unit22\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM7\nmvlc_stack_begin\n  0x0200 0x0017    # select L0.Unit23\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM8\nmvlc_stack_begin\n  0x0200 0x0018    # select L0.Unit24\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM9\nmvlc_stack_begin\n  0x0200 0x0019    # select L0.Unit25\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM10\nmvlc_stack_begin\n  0x0200 0x001a    # select L0.Unit26\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM11\nmvlc_stack_begin\n  0x0200 0x001b    # select L0.Unit27\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM12\nmvlc_stack_begin\n  0x0200 0x001c    # select L0.Unit28\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# NIM13\nmvlc_stack_begin\n  0x0200 0x001d    # select L0.Unit29\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x030a      0    # direction (0:in, 1:out)\n  0x0310      0    # output activate\nmvlc_stack_end\n\n# IRQ1\nmvlc_stack_begin\n  0x0200 0x0021    # select L0.Unit33\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\nmvlc_stack_end\n\n# IRQ2\nmvlc_stack_begin\n  0x0200 0x0022    # select L0.Unit34\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\nmvlc_stack_end\n\n# IRQ3\nmvlc_stack_begin\n  0x0200 0x0023    # select L0.Unit35\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\nmvlc_stack_end\n\n# IRQ4\nmvlc_stack_begin\n  0x0200 0x0024    # select L0.Unit36\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\nmvlc_stack_end\n\n# IRQ5\nmvlc_stack_begin\n  0x0200 0x0025    # select L0.Unit37\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\nmvlc_stack_end\n\n# IRQ6\nmvlc_stack_begin\n  0x0200 0x0026    # select L0.Unit38\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\nmvlc_stack_end\n\n# Level1 #####################################################\n\n# L1.LUT0\nmvlc_stack_begin\n  0x0200 0x0100    # select L1.Unit0\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\nmvlc_stack_end\n\n# L1.LUT1\nmvlc_stack_begin\n  0x0200 0x0101    # select L1.Unit1\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\nmvlc_stack_end\n\n# L1.LUT2\nmvlc_stack_begin\n  0x0200 0x0102    # select L1.Unit2\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\n  0x0380      0    # connect input0 to 'NIM8'\n  0x0382      0    # connect input1 to 'NIM9'\n  0x0384      0    # connect input2 to 'NIM10'\nmvlc_stack_end\n\n# L1.LUT3\nmvlc_stack_begin\n  0x0200 0x0103    # select L1.Unit3\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\nmvlc_stack_end\n\n# L1.LUT4\nmvlc_stack_begin\n  0x0200 0x0104    # select L1.Unit4\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\nmvlc_stack_end\n\n# L1.LUT5\nmvlc_stack_begin\n  0x0200 0x0105    # select L1.Unit5\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\nmvlc_stack_end\n\n# L1.LUT6\nmvlc_stack_begin\n  0x0200 0x0106    # select L1.Unit6\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\nmvlc_stack_end\n\n# Level2 #####################################################\n\n# L2.LUT0\nmvlc_stack_begin\n  0x0200 0x0200    # select L2.Unit0\n  0x0300 0x1111    # cells 0-3\n  0x0302 0x1111    # cells 4-7\n  0x0304 0x1111    # cells 8-11\n  0x0306 0x1111    # cells 12-15\n  0x0308 0x1111    # cells 16-19\n  0x030a 0x1111    # cells 20-23\n  0x030c 0x1111    # cells 24-27\n  0x030e 0x1111    # cells 28-31\n  0x0310 0x1111    # cells 32-35\n  0x0312 0x1111    # cells 36-39\n  0x0314 0x1111    # cells 40-43\n  0x0316 0x1111    # cells 44-47\n  0x0318 0x1111    # cells 48-51\n  0x031a 0x1111    # cells 52-55\n  0x031c 0x1111    # cells 56-59\n  0x031e 0x1111    # cells 60-63\n  0x0320 0b0001    # strobed_outputs\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382      0    # connect input1 to 'timer0'\n  0x0384      0    # connect input2 to 'timer0'\n  # L2.LUT0 strobe gate generator\n  0x0332      0    # delay [ns]\n  0x0334      8    # width [ns]\n  0x0336      0    # holdoff [ns]\n  0x0338      0    # invert (start on trailing edge of input)\n  0x0386     14    # connect strobe_input to 'sysclk'\nmvlc_stack_end\n\n# L2.LUT1\nmvlc_stack_begin\n  0x0200 0x0201    # select L2.Unit1\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\n  0x0320 0b0000    # strobed_outputs\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382      0    # connect input1 to 'timer0'\n  0x0384      0    # connect input2 to 'timer0'\n  # L2.LUT1 strobe gate generator\n  0x0332      0    # delay [ns]\n  0x0334      8    # width [ns]\n  0x0336      0    # holdoff [ns]\n  0x0338      0    # invert (start on trailing edge of input)\n  0x0386      0    # connect strobe_input to 'timer0'\nmvlc_stack_end\n\n# L2.LUT2\nmvlc_stack_begin\n  0x0200 0x0202    # select L2.Unit2\n  0x0300 0x0000    # cells 0-3\n  0x0302 0x0000    # cells 4-7\n  0x0304 0x0000    # cells 8-11\n  0x0306 0x0000    # cells 12-15\n  0x0308 0x0000    # cells 16-19\n  0x030a 0x0000    # cells 20-23\n  0x030c 0x0000    # cells 24-27\n  0x030e 0x0000    # cells 28-31\n  0x0310 0x0000    # cells 32-35\n  0x0312 0x0000    # cells 36-39\n  0x0314 0x0000    # cells 40-43\n  0x0316 0x0000    # cells 44-47\n  0x0318 0x0000    # cells 48-51\n  0x031a 0x0000    # cells 52-55\n  0x031c 0x0000    # cells 56-59\n  0x031e 0x0000    # cells 60-63\n  0x0320 0b0000    # strobed_outputs\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382      0    # connect input1 to 'timer0'\n  0x0384      0    # connect input2 to 'timer0'\n  # L2.LUT2 strobe gate generator\n  0x0332      0    # delay [ns]\n  0x0334      8    # width [ns]\n  0x0336      0    # holdoff [ns]\n  0x0338      0    # invert (start on trailing edge of input)\n  0x0386      0    # connect strobe_input to 'timer0'\nmvlc_stack_end\n\n# Level3 #####################################################\n\n# StackStart0\nmvlc_stack_begin\n  0x0200 0x0300    # select L3.Unit0\n  0x0300      1    # activate\n  0x0302      1    # stack index\n  0x0304      0    # delay [ns]\n  0x0380     14    # connect input0 to 'always true'\nmvlc_stack_end\n\n# StackStart1\nmvlc_stack_begin\n  0x0200 0x0301    # select L3.Unit1\n  0x0300      0    # activate\n  0x0302      1    # stack index\n  0x0304      0    # delay [ns]\n  0x0380      0    # connect input0 to 'timer0'\nmvlc_stack_end\n\n# StackStart2\nmvlc_stack_begin\n  0x0200 0x0302    # select L3.Unit2\n  0x0300      0    # activate\n  0x0302      1    # stack index\n  0x0304      0    # delay [ns]\n  0x0380      0    # connect input0 to 'timer0'\nmvlc_stack_end\n\n# StackStart3\nmvlc_stack_begin\n  0x0200 0x0303    # select L3.Unit3\n  0x0300      0    # activate\n  0x0302      1    # stack index\n  0x0304      0    # delay [ns]\n  0x0380      0    # connect input0 to 'timer0'\nmvlc_stack_end\n\n# MasterTrigger0\nmvlc_stack_begin\n  0x0200 0x0304    # select L3.Unit4\n  0x0300      0    # activate\n  0x0380      0    # connect input0 to 'timer0'\nmvlc_stack_end\n\n# MasterTrigger1\nmvlc_stack_begin\n  0x0200 0x0305    # select L3.Unit5\n  0x0300      0    # activate\n  0x0380      0    # connect input0 to 'timer0'\nmvlc_stack_end\n\n# MasterTrigger2\nmvlc_stack_begin\n  0x0200 0x0306    # select L3.Unit6\n  0x0300      0    # activate\n  0x0380      0    # connect input0 to 'timer0'\nmvlc_stack_end\n\n# MasterTrigger3\nmvlc_stack_begin\n  0x0200 0x0307    # select L3.Unit7\n  0x0300      0    # activate\n  0x0380      0    # connect input0 to 'timer0'\nmvlc_stack_end\n\n# Counter0+Timestamper\nmvlc_stack_begin\n  0x0200 0x0308    # select L3.Unit8\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# Counter1\nmvlc_stack_begin\n  0x0200 0x0309    # select L3.Unit9\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# Counter2\nmvlc_stack_begin\n  0x0200 0x030a    # select L3.Unit10\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# Counter3\nmvlc_stack_begin\n  0x0200 0x030b    # select L3.Unit11\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# Counter4\nmvlc_stack_begin\n  0x0200 0x030c    # select L3.Unit12\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# Counter5\nmvlc_stack_begin\n  0x0200 0x030d    # select L3.Unit13\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# Counter6\nmvlc_stack_begin\n  0x0200 0x030e    # select L3.Unit14\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# Counter7\nmvlc_stack_begin\n  0x0200 0x030f    # select L3.Unit15\n  0x030e      0    # clear on latch\n  0x0380      0    # connect input0 to 'timer0'\n  0x0382     21    # connect input1 to '<not connected>'\nmvlc_stack_end\n\n# NIM unit connections (Note: NIM setup is done in the Level0 section)\n\n# NIM0\nmvlc_stack_begin\n  0x0200 0x0310    # select L3.Unit16\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM1\nmvlc_stack_begin\n  0x0200 0x0311    # select L3.Unit17\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM2\nmvlc_stack_begin\n  0x0200 0x0312    # select L3.Unit18\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM3\nmvlc_stack_begin\n  0x0200 0x0313    # select L3.Unit19\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM4\nmvlc_stack_begin\n  0x0200 0x0314    # select L3.Unit20\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM5\nmvlc_stack_begin\n  0x0200 0x0315    # select L3.Unit21\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM6\nmvlc_stack_begin\n  0x0200 0x0316    # select L3.Unit22\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM7\nmvlc_stack_begin\n  0x0200 0x0317    # select L3.Unit23\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM8\nmvlc_stack_begin\n  0x0200 0x0318    # select L3.Unit24\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM9\nmvlc_stack_begin\n  0x0200 0x0319    # select L3.Unit25\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM10\nmvlc_stack_begin\n  0x0200 0x031a    # select L3.Unit26\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM11\nmvlc_stack_begin\n  0x0200 0x031b    # select L3.Unit27\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM12\nmvlc_stack_begin\n  0x0200 0x031c    # select L3.Unit28\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# NIM13\nmvlc_stack_begin\n  0x0200 0x031d    # select L3.Unit29\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# LVDS0\nmvlc_stack_begin\n  0x0200 0x031e    # select L3.Unit30\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x0310      0    # output activate\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# LVDS1\nmvlc_stack_begin\n  0x0200 0x031f    # select L3.Unit31\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x0310      0    # output activate\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n# LVDS2\nmvlc_stack_begin\n  0x0200 0x0320    # select L3.Unit32\n  0x0300      0    # delay [ns]\n  0x0302      0    # width [ns]\n  0x0304      0    # holdoff [ns]\n  0x0306      0    # invert (start on trailing edge of input)\n  0x0310      0    # output activate\n  0x0380      0    # connect input0 to 'always true'\nmvlc_stack_end\n\n##############################################################\n# MVLC Trigger I/O specific meta information                 #\n##############################################################\nmeta_block_begin mvlc_trigger_io\nnames:\n  level0:\n    0: timer0\n    1: timer1\n    2: timer2\n    3: timer3\n    4: trigger_resource0\n    5: trigger_resource1\n    6: trigger_resource2\n    7: trigger_resource3\n    8: trigger_resource4\n    9: trigger_resource5\n    10: trigger_resource6\n    11: trigger_resource7\n    12: stack_busy0\n    13: stack_busy1\n    14: sysclk\n    15: daq_start\n    16: NIM0\n    17: NIM1\n    18: NIM2\n    19: NIM3\n    20: NIM4\n    21: NIM5\n    22: NIM6\n    23: NIM7\n    24: NIM8\n    25: NIM9\n    26: NIM10\n    27: NIM11\n    28: NIM12\n    29: NIM13\n    30: <unused>\n    31: <unused>\n    32: <unused>\n    33: IRQ1\n    34: IRQ2\n    35: IRQ3\n    36: IRQ4\n    37: IRQ5\n    38: IRQ6\n  level1:\n    0:\n      0: L1.LUT0.OUT0\n      1: L1.LUT0.OUT1\n      2: L1.LUT0.OUT2\n    1:\n      0: L1.LUT1.OUT0\n      1: L1.LUT1.OUT1\n      2: L1.LUT1.OUT2\n    2:\n      0: L1.LUT2.OUT0\n      1: L1.LUT2.OUT1\n      2: L1.LUT2.OUT2\n    3:\n      0: L1.LUT3.OUT0\n      1: L1.LUT3.OUT1\n      2: L1.LUT3.OUT2\n    4:\n      0: L1.LUT4.OUT0\n      1: L1.LUT4.OUT1\n      2: L1.LUT4.OUT2\n    5:\n      0: L1.LUT5.OUT0\n      1: L1.LUT5.OUT1\n      2: L1.LUT5.OUT2\n    6:\n      0: L1.LUT6.OUT0\n      1: L1.LUT6.OUT1\n      2: L1.LUT6.OUT2\n  level2:\n    0:\n      0: always true\n      1: L2.LUT0.OUT1\n      2: L2.LUT0.OUT2\n    1:\n      0: L2.LUT1.OUT0\n      1: L2.LUT1.OUT1\n      2: L2.LUT1.OUT2\n    2:\n      0: L2.LUT2.OUT0\n      1: L2.LUT2.OUT1\n      2: L2.LUT2.OUT2\n  level3:\n    0: StackStart0\n    1: StackStart1\n    2: StackStart2\n    3: StackStart3\n    4: MasterTrigger0\n    5: MasterTrigger1\n    6: MasterTrigger2\n    7: MasterTrigger3\n    8: Counter0+Timestamper\n    9: Counter1\n    10: Counter2\n    11: Counter3\n    12: Counter4\n    13: Counter5\n    14: Counter6\n    15: Counter7\n    30: LVDS0\n    31: LVDS1\n    32: LVDS2\n    33: <not connected>\nsettings:\n  level0:\n    0:\n      soft_activate: false\n    1:\n      soft_activate: false\n    2:\n      soft_activate: false\n    3:\n      soft_activate: false\n  level3:\n    8:\n      soft_activate: false\n    9:\n      soft_activate: false\n    10:\n      soft_activate: false\n    11:\n      soft_activate: false\n    12:\n      soft_activate: false\n    13:\n      soft_activate: false\n    14:\n      soft_activate: false\n    15:\n      soft_activate: false\nmeta_block_end"
+                    }
+                }
+            ],
+            "enabled": true,
+            "id": "{96137753-ee7e-4d58-8770-59d099373c98}",
+            "name": "global_objects",
+            "properties": {
+                "display_name": "Global Objects",
+                "icon": ":/vme_global_scripts.png"
+            },
+            "variable_table": {
+                "name": "",
+                "variables": {
+                }
+            }
+        },
+        "id": "{b150ddfb-e1b4-4031-b853-85a27ccb32fc}",
+        "name": "",
+        "properties": {
+            "version": 4
+        },
+        "variable_table": {
+            "name": "",
+            "variables": {
+            }
+        },
+        "vme_controller": {
+            "settings": {
+                "index": 0,
+                "method": "by_index",
+                "mvlc_crate_id": 0,
+                "mvlc_eth_enable_jumbos": false,
+                "mvlc_hostname": "MVLC-0124"
+            },
+            "type": "MVLC_ETH"
+        }
+    }
+}
